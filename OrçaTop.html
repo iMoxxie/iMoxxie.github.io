@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"></head><body>
+<!-- CONTEUDO: daqui até /CONTEUDO é o que vai para a versão publicada no Claude -->
+<title>OrçaTop</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9IiMxQzIyMjgiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNTYgMjU2KSBzY2FsZSgxLjA1KSB0cmFuc2xhdGUoLTU0MCAtNDc1KSI+CiAgPGcgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgICA8cGF0aCBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJNNjQwIDQ5OCBWNTgwIEEyMCAyMCAwIDAgMSA2MjAgNjAwIEg0NjAgQTIwIDIwIDAgMCAxIDQ0MCA1ODAgVjM3MCBBMjAgMjAgMCAwIDEgNDYwIDM1MCBINTY2Ii8+CiAgICA8cGF0aCBzdHJva2U9IiNGNUI4MDAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJNNTkwIDM1MCBMNjQwIDQwMCBWNDc0Ii8+CiAgPC9nPgogIDxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICA8cGF0aCBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMTgiIGQ9Ik00OTQgNDMwIEg1MzYgTTU2OCA0MzAgSDU4NiBNNDk0IDQ3OCBINTI0IE01NjggNDc4IEg1ODYiLz4KICAgIDxwYXRoIHN0cm9rZT0iI0Y1QjgwMCIgc3Ryb2tlLXdpZHRoPSIyNCIgZD0iTTQ5NCA1NDAgSDU4NiIvPgogIDwvZz48L2c+Cjwvc3ZnPg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: uma coluna estreita de app (celular primeiro). No computador, as telas de
+   orçamento ganham uma segunda coluna com a folha do documento ao vivo.
+   Visual "bancada": fundo cal, grafite, amarelo trena como único destaque. */
+:root{
+  --bg:#EEF0EB;          /* cal */
+  --surface:#FFFFFF;
+  --well:#E1E5DE;        /* bancada: áreas rebaixadas */
+  --ink:#1C2228;         /* grafite */
+  --ink-soft:#5B6470;    /* pedra */
+  --line:#DCE0DA;
+  --line-strong:#C5CBC3;
+  --accent:#F5B800;      /* amarelo trena */
+  --accent-soft:#FFF4CC;
+  --accent-ink:#7A5A00;
+  --on-accent:#1C2228;
+  --bar:#1C2228;
+  --on-bar:#FFFFFF;
+  --on-bar-soft:#B9C1BC;
+  /* cores de estado (semânticas, não são o destaque) */
+  --st-neg:#B4632A; --st-apr:#2F7A4F; --st-exe:#2B5B8C; --st-fin:#5B6470; --st-per:#B3261E;
+  --danger:#B3261E; --danger-soft:#FBEAE8; --ok:#2F7A4F; --ok-soft:#E5F1EA;
+  --wa:#2F7A4F;
+  /* folha de papel: igual nos dois temas, porque é o que o cliente recebe */
+  --paper:#FFFFFF; --paper-ink:#1C2228; --paper-soft:#5B6470; --paper-line:#DCE0DA; --paper-well:#F6F7F4;
+  --paper-accent:#F5B800; --paper-accent-soft:#FFF4CC;
+  --shadow:0 1px 2px rgba(28,34,40,.06), 0 6px 18px -8px rgba(28,34,40,.18);
+  --display:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;
+  --text:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171A; --surface:#1C2226; --well:#171C1F; --ink:#ECEFEA; --ink-soft:#A3ACA6;
+    --line:#2A3237; --line-strong:#3B454B; --accent:#F5B800; --accent-soft:#3A3112; --accent-ink:#F5CF5A;
+    --on-accent:#1C2228; --bar:#0C0F11; --on-bar:#ECEFEA; --on-bar-soft:#A3ACA6;
+    --st-neg:#E08A4E; --st-apr:#5DB585; --st-exe:#6A9BD1; --st-fin:#A3ACA6; --st-per:#E5675E;
+    --danger:#E5675E; --danger-soft:#3A1F1D; --ok:#5DB585; --ok-soft:#1B3326; --wa:#2F7A4F;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 22px -10px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13171A; --surface:#1C2226; --well:#171C1F; --ink:#ECEFEA; --ink-soft:#A3ACA6;
+  --line:#2A3237; --line-strong:#3B454B; --accent:#F5B800; --accent-soft:#3A3112; --accent-ink:#F5CF5A;
+  --on-accent:#1C2228; --bar:#0C0F11; --on-bar:#ECEFEA; --on-bar-soft:#A3ACA6;
+  --st-neg:#E08A4E; --st-apr:#5DB585; --st-exe:#6A9BD1; --st-fin:#A3ACA6; --st-per:#E5675E;
+  --danger:#E5675E; --danger-soft:#3A1F1D; --ok:#5DB585; --ok-soft:#1B3326; --wa:#2F7A4F;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 8px 22px -10px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+html,body{min-height:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--text); font-size:15px; line-height:1.45; -webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;}
+button{cursor:pointer;}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+[hidden]{display:none!important;}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em;}
+.num{font-variant-numeric:tabular-nums;}
+.ico{width:20px;height:20px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ---------- casca ---------- */
+#app{max-width:640px;margin:0 auto;padding-bottom:110px;}
+#app.wide{max-width:1240px;}
+.cols{display:block;}
+.cols > .main{min-width:0;}
+.cols > .side{display:none;}
+@media (min-width:1000px){
+  #app.wide .cols{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:28px;align-items:start;}
+  #app.wide .cols > .side{display:block;position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);padding-top:16px;padding-bottom:16px;padding-right:max(16px, env(safe-area-inset-right,0px));max-height:calc(100vh - 76px - env(safe-area-inset-top,0px));overflow-y:auto;}
+  #app.wide .only-mobile{display:none!important;}
+}
+.topbar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);
+  display:flex;align-items:center;gap:8px;min-height:60px;
+  padding-block:10px;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
+  border-bottom:1px solid var(--line);
+}
+.topbar .titles{flex:1;min-width:0;}
+.topbar h1{font-size:19px;font-weight:700;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.topbar .sub{margin-top:1px;}
+.icon-btn{
+  width:40px;height:40px;border-radius:10px;border:none;background:none;color:var(--ink);
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 40px;
+}
+.icon-btn:hover{background:var(--well);}
+.content{display:flex;flex-direction:column;gap:12px;padding-block:16px;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));}
+.sub{color:var(--ink-soft);font-size:13px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.card-head h2{font-size:16px;font-weight:600;}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+.row{display:flex;gap:10px;}
+.row > *{flex:1;min-width:0;}
+@media (max-width:420px){ .row.stack{flex-direction:column;gap:0;} }
+
+/* ---------- campos ---------- */
+.field{display:flex;flex-direction:column;gap:5px;margin-top:12px;}
+.field:first-child{margin-top:0;}
+.row > .field{margin-top:12px;}
+.row:first-child > .field{margin-top:0;}
+@media (max-width:420px){ .row.stack > .field + .field{margin-top:12px;} }
+.field > label, .lbl{font-size:13px;color:var(--ink-soft);font-weight:500;}
+input[type=text],input[type=tel],input[type=email],input[type=search],input[type=datetime-local],input[type=date],select,textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line-strong);border-radius:9px;
+  background:var(--surface);font-size:16px;transition:border-color .12s, box-shadow .12s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--accent);}
+input::placeholder,textarea::placeholder{color:var(--ink-soft);opacity:.65;}
+textarea{min-height:76px;resize:vertical;line-height:1.45;}
+.hint{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;}
+.timefields{display:flex;align-items:center;gap:6px;}
+.timefields input{width:58px;text-align:center;padding:11px 4px;}
+.money-in{position:relative;}
+.money-in::before{content:"R$";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-soft);font-size:15px;pointer-events:none;}
+.money-in input{padding-left:38px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;}
+.toggle-row > span{font-size:14.5px;}
+.switch{position:relative;width:46px;height:28px;flex:0 0 46px;}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1;}
+.slider{position:absolute;inset:0;background:var(--line-strong);border-radius:20px;transition:.15s;}
+.slider::before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2);}
+.switch input:checked + .slider{background:var(--ink);}
+.switch input:checked + .slider::before{transform:translateX(18px);background:var(--accent);}
+.switch input:focus-visible + .slider{outline:2px solid var(--ink);outline-offset:2px;}
+.seg{display:flex;background:var(--well);border-radius:10px;padding:3px;gap:3px;margin-top:12px;}
+.seg button{flex:1;padding:9px 8px;border:none;background:none;border-radius:8px;font-size:13.5px;font-weight:500;color:var(--ink-soft);}
+#s-hmodo-horario,#s-hmodo-estimado{margin-top:12px;}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(28,34,40,.15);}
+
+/* ---------- botões ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 16px;border-radius:11px;border:1px solid var(--line-strong);
+  background:var(--surface);color:var(--ink);font-size:15px;font-weight:600;text-decoration:none;
+}
+.btn:hover{border-color:var(--ink);}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-family:var(--display);font-weight:700;font-size:16px;}
+.btn-primary:hover{filter:brightness(1.06);border-color:var(--accent);}
+.btn-dark{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+.btn-danger{background:none;border-color:var(--danger);color:var(--danger);}
+.btn-block{width:100%;}
+.btn-sm{padding:7px 12px;font-size:13.5px;border-radius:9px;}
+.btn:disabled{opacity:.55;cursor:wait;}
+.btn-dashed{border-style:dashed;background:none;font-weight:500;}
+.btn-dashed:hover{background:var(--surface);}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;}
+.btn-group > .btn{flex:1 1 140px;}
+.link{background:none;border:none;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong);padding:4px 0;font-size:13.5px;}
+.link.danger{color:var(--danger);}
+.fab{
+  position:fixed;z-index:25;width:58px;height:58px;border-radius:18px;border:none;
+  right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));
+  background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px -6px rgba(28,34,40,.45);
+}
+.fab .ico{width:26px;height:26px;stroke-width:2.2;}
+
+/* ---------- início ---------- */
+.brand{display:flex;align-items:center;gap:10px;}
+.brand svg{width:34px;height:34px;flex:0 0 34px;}
+.brand .word{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.03em;}
+.hero-actions{display:grid;grid-template-columns:1fr;gap:10px;}
+.big-action{
+  display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  padding:16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+.big-action:hover{border-color:var(--ink);}
+.big-action.primary{background:var(--bar);border-color:var(--bar);color:var(--on-bar);border-top:3px solid var(--accent);}
+.big-action .ico{width:26px;height:26px;}
+.big-action .t{font-family:var(--display);font-weight:700;font-size:17px;display:block;}
+.big-action .d{font-size:13px;opacity:.75;display:block;margin-top:1px;}
+.navgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.navcard{
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;
+  padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+.navcard:hover{border-color:var(--ink);}
+.navcard.wide{grid-column:1 / -1;}
+.navcard .lbl2{font-weight:600;font-size:15px;}
+.navcard .sub{margin-top:-6px;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stat{padding:14px;border-radius:14px;background:var(--well);}
+.stat .v{font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;margin-top:2px;}
+
+/* ---------- estado do orçamento ---------- */
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--well);color:var(--ink);white-space:nowrap;}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);}
+.st-negociacao{--c:var(--st-neg);} .st-aprovado{--c:var(--st-apr);} .st-execucao{--c:var(--st-exe);}
+.st-finalizado{--c:var(--st-fin);} .st-perdido{--c:var(--st-per);}
+.orc-list{display:flex;flex-direction:column;gap:8px;}
+.orc-card{
+  display:grid;grid-template-columns:1fr auto;gap:2px 12px;width:100%;text-align:left;
+  padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+.orc-card:hover{border-color:var(--ink);}
+.orc-card .n{font-family:var(--display);font-weight:700;font-size:14px;color:var(--ink-soft);}
+.orc-card .c{font-weight:600;font-size:16px;grid-column:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.orc-card .p{font-size:13px;color:var(--ink-soft);grid-column:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.orc-card .v{font-family:var(--display);font-weight:700;font-size:17px;grid-column:2;grid-row:2;text-align:right;align-self:center;}
+.orc-card .pill{grid-column:2;grid-row:1;justify-self:end;}
+.orc-card .warn{grid-column:1 / -1;font-size:12.5px;color:var(--danger);margin-top:4px;}
+.filterbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin:0 -2px;scrollbar-width:none;}
+.chip{flex:0 0 auto;padding:7px 13px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink);}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+.search{position:relative;}
+.search .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-soft);width:18px;height:18px;}
+.search input{padding-left:38px;}
+
+/* ---------- linhas de itens ---------- */
+.items{display:flex;flex-direction:column;}
+.item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);}
+.item-row:last-child{border-bottom:none;}
+.item-row > div:first-child{min-width:0;flex:1;}
+.item-main{font-weight:600;overflow-wrap:anywhere;}
+.item-sub{font-size:12.5px;color:var(--ink-soft);margin-top:1px;overflow-wrap:anywhere;}
+.item-val{font-weight:700;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;}
+.item-links{display:flex;gap:12px;justify-content:flex-end;margin-top:2px;}
+.empty{color:var(--ink-soft);font-size:14px;padding:6px 0;}
+.empty-big{text-align:center;color:var(--ink-soft);padding:40px 12px;font-size:14.5px;}
+.sum-line{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:15px;}
+.sum-line .num{font-weight:600;}
+.sum-line.total{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;font-weight:700;font-size:17px;}
+.sum-line.total .num{font-family:var(--display);font-size:20px;}
+.progress{height:6px;border-radius:6px;background:var(--well);overflow:hidden;margin:8px 0 4px;}
+.progress > span{display:block;height:100%;background:var(--ok);}
+
+/* ---------- barra fixa do formulário ---------- */
+.action-bar{
+  position:sticky;bottom:0;z-index:15;background:var(--bar);color:var(--on-bar);border-top:3px solid var(--accent);
+  padding-top:14px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+.action-bar .tl{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.action-bar .tl .l{font-size:13.5px;color:var(--on-bar-soft);}
+.action-bar .tl .big{font-family:var(--display);font-weight:700;font-size:28px;letter-spacing:-.02em;}
+.action-bar .btns{display:flex;gap:8px;}
+.action-bar .btns .btn-primary{flex:1;}
+.btn-on-bar{background:none;border:1px solid var(--on-bar-soft);color:var(--on-bar);}
+.btn-on-bar:hover{border-color:var(--on-bar);}
+#app.has-bar{padding-bottom:0;}
+
+/* ---------- contato ---------- */
+.contact-row{display:flex;gap:8px;margin-top:12px;}
+.contact-row .btn{flex:1;}
+.btn-wa{background:var(--wa);border-color:var(--wa);color:#fff;}
+.btn-wa:hover{border-color:var(--wa);filter:brightness(1.08);}
+.warn-box{background:var(--danger-soft);border:1px solid var(--danger);color:var(--danger);border-radius:10px;padding:10px 12px;font-size:13.5px;margin-top:12px;}
+.reminder{border-radius:10px;padding:10px 12px;background:var(--well);display:flex;flex-direction:column;gap:4px;}
+.reminder .tag{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.reminder.late{background:var(--danger-soft);} .reminder.late .tag{color:var(--danger);}
+.reminder.done{background:var(--ok-soft);} .reminder.done .tag{color:var(--ok);}
+.reminder.sched .tag{color:var(--accent-ink);}
+/* ---------- agenda ---------- */
+.wk-nav{display:flex;align-items:center;gap:6px;}
+.wk-nav .btn-mes{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:7px 12px;font-weight:600;font-size:13.5px;}
+.week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.wk-day{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:7px 0 6px;text-align:center;font-size:12px;color:var(--ink-soft);min-width:0;}
+.wk-day b{display:block;font-family:var(--display);font-size:17px;color:var(--ink);line-height:1.2;}
+.wk-day i{display:block;width:5px;height:5px;border-radius:50%;margin:3px auto 0;background:transparent;}
+.wk-day.has i{background:var(--ink);}
+.wk-day.hoje b{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:3px;}
+.wk-day.on{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+.wk-day.on b{color:var(--bg);}
+.wk-day.on.has i{background:var(--bg);}
+.day-title{font-weight:700;font-size:15px;margin-top:4px;}
+.day-items{display:flex;flex-direction:column;gap:8px;}
+.day-item{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);}
+.day-item .hr{font-family:var(--display);font-weight:700;min-width:44px;font-size:15px;}
+.day-item .body{min-width:0;flex:1;}
+.day-item .t{font-weight:600;font-size:14.5px;display:block;overflow-wrap:anywhere;}
+.day-item .d{font-size:12.5px;color:var(--ink-soft);display:block;overflow-wrap:anywhere;}
+.day-item .tag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--well);color:var(--ink-soft);margin-left:6px;vertical-align:1px;}
+.day-item.tipo-cobranca,.day-item.tipo-lembrete{border-left:4px solid var(--accent);}
+.day-item.tipo-cobranca .tag,.day-item.tipo-lembrete .tag{background:var(--accent-soft);color:var(--accent-ink);}
+.day-item .late{color:var(--danger);font-weight:600;}
+.day-item.feito{opacity:.55;}
+.day-item.feito .t{text-decoration:line-through;}
+.month-head{display:flex;align-items:center;justify-content:space-between;}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.month-grid .wd{text-align:center;font-size:12px;font-weight:600;color:var(--ink-soft);}
+.month-grid .mday{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:10px 0;text-align:center;font-size:14px;min-width:0;}
+.month-grid .mday.busy{background:var(--line-strong);font-weight:700;}
+.month-grid .mday.hoje{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.month-grid .mday.wk{box-shadow:0 0 0 2px var(--accent);}
+.month-leg{font-size:12.5px;color:var(--ink-soft);}
+.rem-list{display:flex;flex-direction:column;gap:8px;}
+.rem-item{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--danger);background:var(--danger-soft);color:var(--ink);}
+.rem-item.today{border-color:var(--accent);background:var(--accent-soft);}
+.rem-item .ico{color:var(--danger);} .rem-item.today .ico{color:var(--accent-ink);}
+.rem-item .t{font-weight:600;font-size:14.5px;display:block;}
+.rem-item .d{font-size:12.5px;color:var(--ink-soft);display:block;}
+
+/* ---------- autocompletar ---------- */
+.autolist{border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;background:var(--surface);margin-top:4px;}
+.autoitem{display:block;width:100%;text-align:left;padding:10px 12px;border:none;border-bottom:1px solid var(--line);background:none;color:var(--ink);}
+.autoitem:last-child{border-bottom:none;}
+.autoitem:hover,.autoitem:focus-visible{background:var(--well);}
+.autoitem b{display:block;font-weight:600;}
+.autoitem span{font-size:12.5px;color:var(--ink-soft);}
+
+/* ---------- janelas (de baixo para cima no celular) ---------- */
+.overlay{position:fixed;inset:0;background:rgba(12,15,17,.5);z-index:50;display:flex;align-items:flex-end;justify-content:center;}
+.sheet{
+  background:var(--surface);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;
+  border-radius:20px 20px 0 0;
+  padding-top:20px;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));
+  padding-left:max(18px, env(safe-area-inset-left,0px));padding-right:max(18px, env(safe-area-inset-right,0px));
+}
+.sheet.doc-sheet{max-width:860px;background:var(--well);}
+@media (min-width:700px){ .overlay{align-items:center;padding:24px;} .sheet{border-radius:18px;padding-bottom:22px;} }
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+.sheet-head h3{font-size:20px;font-weight:700;}
+.sheet-actions{display:flex;gap:8px;margin-top:18px;}
+.sheet-actions .btn{flex:1;}
+.sheet-actions .btn-danger{flex:0 0 auto;}
+#confirm-overlay{z-index:60;}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);z-index:80;
+  bottom:calc(26px + env(safe-area-inset-bottom,0px));
+  background:var(--bar);color:var(--on-bar);padding:11px 16px;border-radius:10px;
+  border-left:4px solid var(--accent);font-size:14px;width:max-content;max-width:calc(100% - 32px);text-align:center;
+  box-shadow:var(--shadow);
+}
+.mode-note{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-soft);padding:12px 14px;border-radius:12px;background:var(--well);}
+.mode-note .ico{width:18px;height:18px;margin-top:1px;}
+.loading{padding:60px 16px;text-align:center;color:var(--ink-soft);}
+.logo-pick{display:flex;gap:14px;align-items:center;}
+.logo-box{width:96px;height:64px;border-radius:10px;border:1.5px dashed var(--line-strong);display:flex;align-items:center;justify-content:center;background:var(--well);overflow:hidden;flex:0 0 96px;color:var(--ink-soft);font-size:12px;text-align:center;}
+.logo-box img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;}
+.file-btn{position:relative;overflow:hidden;}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+/* ---------- relatórios ---------- */
+.chart{width:100%;height:auto;display:block;color:var(--ink-soft);}
+
+/* ---------- pré-visualização da folha ---------- */
+.preview-label{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;}
+.doc-frame{position:relative;overflow:hidden;border-radius:6px;box-shadow:0 1px 0 var(--line-strong), 0 24px 48px -24px rgba(12,15,17,.45);background:var(--paper);}
+.doc-frame > .doc{position:absolute;top:0;left:0;transform-origin:top left;}
+.pdf-host{position:fixed;left:-12000px;top:0;width:780px;pointer-events:none;}
+
+/* ---------- A FOLHA (vira o PDF) ---------- */
+.doc{
+  width:780px;background:var(--paper);color:var(--paper-ink);font-family:var(--text);
+  padding:0 56px 44px;font-size:14px;line-height:1.45;
+}
+.doc .tape{height:4px;margin:0 -56px 34px;background:var(--paper-accent);}
+.doc .hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px;}
+.doc .hdr img{max-height:60px;max-width:200px;object-fit:contain;display:block;margin-bottom:12px;}
+.doc .co{font-family:var(--display);font-weight:700;font-size:25px;letter-spacing:0;line-height:1.15;margin:0;}
+.doc .co-sub{font-size:12.5px;color:var(--paper-soft);margin-top:4px;line-height:1.5;}
+.doc .meta{text-align:right;flex:0 0 auto;}
+.doc .meta .kind{font-size:12.5px;color:var(--paper-soft);font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+.doc .meta .nr{font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:0;line-height:1.1;}
+.doc .meta .when{font-size:12.5px;color:var(--paper-soft);margin-top:3px;}
+.doc .to{margin-bottom:24px;padding:14px 18px;background:var(--paper-well);border-radius:8px;}
+.doc .to .h{font-size:12px;font-weight:600;color:var(--paper-soft);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+.doc .to .name{font-family:var(--display);font-weight:600;font-size:17px;}
+.doc .to .m{font-size:13px;color:var(--paper-soft);}
+.doc table{width:100%;border-collapse:collapse;margin-bottom:24px;}
+.doc th{text-align:left;font-size:12px;font-weight:600;color:var(--paper-soft);letter-spacing:.04em;text-transform:uppercase;border-bottom:1.5px solid var(--paper-ink);padding:0 8px 8px;}
+.doc td{padding:10px 8px;font-size:13.5px;border-bottom:1px solid var(--paper-line);vertical-align:top;}
+.doc td.r,.doc th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.doc .it{font-weight:600;}
+.doc .ds{font-size:12.5px;color:var(--paper-soft);white-space:pre-wrap;margin-top:2px;}
+.doc .totals{display:flex;justify-content:flex-end;}
+.doc .tbox{width:320px;}
+.doc .tl{display:flex;justify-content:space-between;font-size:13.5px;padding:4px 8px;color:var(--paper-soft);}
+.doc .tl span:last-child{color:var(--paper-ink);font-variant-numeric:tabular-nums;}
+.doc .tl.grand{margin-top:8px;padding:12px 14px;background:var(--paper-accent-soft);border-left:4px solid var(--paper-accent);border-radius:0 6px 6px 0;align-items:baseline;color:var(--paper-ink);font-weight:600;font-size:14.5px;}
+.doc .tl.grand span:last-child{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:0;}
+.doc .stmt{margin-top:26px;padding:14px 18px;border:1px solid var(--paper-line);border-radius:8px;font-size:14px;line-height:1.6;}
+.doc .terms{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+.doc .terms div{font-size:12.5px;color:var(--paper-soft);}
+.doc .terms b{display:block;color:var(--paper-ink);font-size:13.5px;font-weight:600;margin-top:1px;}
+.doc .obs{margin-top:24px;}
+.doc .obs .h{font-size:12px;font-weight:600;color:var(--paper-soft);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.doc .obs p{margin:0;font-size:13.5px;white-space:pre-wrap;}
+.doc .signs{display:flex;justify-content:space-between;gap:40px;margin-top:48px;}
+.doc .signs div{flex:0 0 260px;border-top:1px solid var(--paper-ink);padding-top:6px;font-size:12.5px;color:var(--paper-soft);}
+.doc .signs div:only-child{margin-left:auto;}
+.doc .foot{margin-top:26px;padding-top:12px;border-top:1px solid var(--paper-line);font-size:11.5px;color:var(--paper-soft);}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;scroll-behavior:auto!important;} }
+</style>
+
+<div id="app"><div class="loading">Abrindo o OrçaTop…</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+"use strict";
+/* =====================================================================
+   OrçaTop — versão combinada (2026-11-01)
+   Base: versão do pai (telas, etapas, recibos, lembretes, relatórios).
+   Da versão anterior: visual, documento com prévia ao vivo, PDF por imagem,
+   descrição dos serviços, máscara de telefone, catálogo, backup.
+   Funciona de dois jeitos:
+   - publicado no Claude: dados na nuvem (capacidade "db")
+   - aberto como arquivo: dados no navegador (localStorage), com backup
+   ===================================================================== */
+
+let db = null, assetsCap = null, downloadsCap = null, MODO = 'local';
+let STATE = { clientes:{}, catServicos:{}, catMateriais:{}, orcamentos:{}, compromissos:{}, config:{} };
+const STATUS_LABEL = {negociacao:"Em negociação", aprovado:"Aprovado", execucao:"Em execução", finalizado:"Finalizado", perdido:"Perdido"};
+const STATUS_ORDER = ["negociacao","aprovado","execucao","finalizado","perdido"];
+const LOCAL_KEY = 'orcatop.v2';
+const V1_KEY = 'calcOrcamento.v1';
+
+// ---------------- utilidades ----------------
+const $ = id => document.getElementById(id);
+function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
+function cents(n){ return Math.round((Number(n) + Number.EPSILON) * 100) / 100; }
+function fmtMoney(v){ v = Number(v) || 0; return "R$ " + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmtNum(v){ return (Number(v) || 0).toLocaleString('pt-BR', {maximumFractionDigits:2}); }
+function fmtDate(d){ if(!d) return ""; return new Date(d).toLocaleDateString('pt-BR'); }
+function fmtDateTime(d){ if(!d) return ""; const dt = new Date(d); return dt.toLocaleDateString('pt-BR') + " às " + dt.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}); }
+function nowISO(){ return new Date().toISOString(); }
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function onlyDigits(s){ return String(s || '').replace(/\D/g, ''); }
+function clone(o){ return o == null ? o : JSON.parse(JSON.stringify(o)); }
+// aceita "10,50", "1.234,56" e "10.5"
+function parseNum(s){
+  if(typeof s === 'number') return s;
+  s = String(s || '').trim().replace(/\s|R\$/g, '');
+  if(!s) return 0;
+  if(s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  const n = Number(s);
+  return isFinite(n) ? n : 0;
+}
+// número para mostrar dentro de um campo (vírgula decimal)
+function numIn(v){ if(v === '' || v == null || Number(v) === 0) return ''; return String(Number(v)).replace('.', ','); }
+// data ISO -> valor do campo datetime-local no horário local (o original mostrava em UTC)
+function maskPhone(v){
+  v = onlyDigits(v).slice(0, 11);
+  if(v.length > 10) return v.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+  if(v.length > 6)  return v.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+  if(v.length > 2)  return v.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+  if(v.length > 0)  return v.replace(/^(\d*)/, "($1");
+  return v;
+}
+function waNumber(tel){
+  const d = onlyDigits(tel);
+  if(d.length === 10 || d.length === 11) return '55' + d;
+  if(d.startsWith('55') && (d.length === 12 || d.length === 13)) return d;
+  return d.length >= 8 ? d : '';
+}
+function toast(msg){
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3200);
+}
+async function salvando(fn, erroMsg){
+  try { return await fn(); }
+  catch(e){ console.error(e); toast((erroMsg || 'Não foi possível salvar.') + ' ' + (e && e.message ? '(' + e.message + ')' : '')); throw e; }
+}
+
+// ---------------- ícones (traço simples) ----------------
+const ICONS = {
+  back:'<path d="M15 18l-6-6 6-6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.6a3.5 3.5 0 0 1 0 6.8M21 20c0-2.6-1.6-4.8-4-5.6"/>',
+  box:'<path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/>',
+  chart:'<path d="M4 20V11M10 20V5M16 20v-6M3 20h18"/>',
+  gear:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>',
+  msg:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  bell:'<path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>',
+  download:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',
+  copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>',
+  trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  close:'<path d="M6 6l12 12M18 6L6 18"/>',
+  cloud:'<path d="M7 18a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 11a4 4 0 0 1-1 7z"/>',
+  disk:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v5h8V4M8 20v-6h8v6"/>',
+};
+function ico(n){ return `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ''}</svg>`; }
+const BRAND_SVG = `<svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#1C2228"/><g transform="translate(256 256) scale(1.05) translate(-540 -475)"><g fill="none" stroke-width="30" stroke-linejoin="round"><path stroke="#FFFFFF" d="M640 498 V580 A20 20 0 0 1 620 600 H460 A20 20 0 0 1 440 580 V370 A20 20 0 0 1 460 350 H566"/><path stroke="#F5B800" d="M590 350 L640 400 V474"/></g><g fill="none" stroke-linecap="round"><path stroke="#FFFFFF" stroke-width="18" d="M494 430 H536 M568 430 H586 M494 478 H524 M568 478 H586"/><path stroke="#F5B800" stroke-width="24" d="M494 540 H586"/></g></g></svg>`;
+
+// ---------------- banco local (mesma "forma" do banco do Claude) ----------------
+// Assim o resto do app usa db.collection(...).add/doc().set/update/delete/onSnapshot
+// sem saber se está na nuvem ou no navegador.
+function createLocalDb(){
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}') || {}; } catch(e){ data = {}; }
+  const listeners = new Set();
+  function persist(){
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(data)); }
+    catch(e){
+      try { data = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}') || {}; } catch(_){}
+      throw new Error('o navegador não deixou guardar (espaço cheio ou bloqueado). Baixe um backup em Configurações.');
+    }
+  }
+  function snapDoc(c, id){ const d = data[c] && data[c][id]; return { id, exists: !!d, data: () => d ? clone(d) : undefined, metadata:{fromCache:false, hasPendingWrites:false} }; }
+  function fire(l){
+    if(l.doc) l.cb(snapDoc(l.c, l.id));
+    else { const col = data[l.c] || {}; const docs = Object.keys(col).map(id => snapDoc(l.c, id)); l.cb({docs, size:docs.length, empty:!docs.length, metadata:{fromCache:false, hasPendingWrites:false}}); }
+  }
+  function notify(){ setTimeout(() => listeners.forEach(fire), 0); }
+  function docRef(c, id){
+    return {
+      id, path: c + '/' + id,
+      async get(){ return snapDoc(c, id); },
+      async set(d){ (data[c] = data[c] || {})[id] = clone(d); persist(); notify(); },
+      async update(d){ if(!data[c] || !data[c][id]) throw new Error('documento não existe'); Object.assign(data[c][id], clone(d)); persist(); notify(); },
+      async delete(){ if(data[c]) delete data[c][id]; persist(); notify(); },
+      onSnapshot(cb){ const l = {doc:true, c, id, cb}; listeners.add(l); setTimeout(() => fire(l), 0); return () => listeners.delete(l); },
+    };
+  }
+  return {
+    doc(path){ const [c, id] = path.split('/'); return docRef(c, id); },
+    collection(c){
+      return {
+        path: c,
+        doc: id => docRef(c, id || uid()),
+        async add(d){ const r = docRef(c, uid()); await r.set(d); return r; },
+        onSnapshot(cb){ const l = {doc:false, c, cb}; listeners.add(l); setTimeout(() => fire(l), 0); return () => listeners.delete(l); },
+      };
+    },
+  };
+}
+
+// ---------------- inicialização ----------------
+let LOADED = new Set(), LOAD_TIMER = null, LOAD_SLOW = false;
+const NEEDED = ['clientes','catalogoServicos','catalogoMateriais','orcamentos','compromissos','config'];
+async function boot(){
+  let cloud = null;
+  if(window.claude && typeof window.claude.use === 'function'){
+    try { cloud = await window.claude.use("db"); } catch(e){ cloud = null; }
+    try { downloadsCap = await window.claude.use("downloads"); } catch(e){ downloadsCap = null; }
+    if(cloud){ try { assetsCap = await window.claude.use("assets"); } catch(e){ assetsCap = null; } }
+  }
+  db = cloud || createLocalDb();
+  MODO = cloud ? 'nuvem' : 'local';
+  LOAD_TIMER = setTimeout(() => { LOAD_SLOW = true; if(LOADED.size < NEEDED.length) renderLoading(); }, 10000);
+  sub("clientes", d => STATE.clientes = d);
+  sub("catalogoServicos", d => STATE.catServicos = d);
+  sub("catalogoMateriais", d => STATE.catMateriais = d);
+  sub("orcamentos", d => STATE.orcamentos = d);
+  sub("compromissos", d => STATE.compromissos = d);
+  db.doc("config/empresa").onSnapshot(snap => {
+    STATE.config = snap.exists ? snap.data() : {};
+    prepararLogo();
+    loaded('config');
+  }, err => { console.error(err); loaded('config'); });
+}
+function sub(path, assign){
+  db.collection(path).onSnapshot(snap => {
+    const o = {};
+    snap.docs.forEach(doc => { o[doc.id] = Object.assign({}, doc.data(), {id: doc.id}); });
+    assign(o);
+    loaded(path);
+  }, err => { console.error(path, err); toast('Não foi possível ler os dados (' + path + ').'); loaded(path); });
+}
+function loaded(name){
+  const first = !LOADED.has(name);
+  LOADED.add(name);
+  if(LOADED.size < NEEDED.length) return;
+  if(LOAD_TIMER){ clearTimeout(LOAD_TIMER); LOAD_TIMER = null; }
+  if(first && LOADED.size === NEEDED.length && !VIEW.started){ VIEW.started = true; render(); return; }
+  dataChanged();
+}
+function renderLoading(){
+  $('app').innerHTML = `<div class="loading">${LOAD_SLOW ? 'Os dados estão demorando para chegar. Confira a internet; a página continua tentando sozinha.' : 'Abrindo o OrçaTop…'}</div>`;
+}
+
+// ---------------- navegação ----------------
+// Navegação em memória (o Claude não deixa usar endereços #/caminho).
+const VIEW = { name:'home', param:null, started:false };
+let SKIPPED_REFRESH = false;
+function go(name, param){ VIEW.name = name; VIEW.param = param ?? null; closeAllOverlays(); render(); window.scrollTo(0, 0); }
+// Telas com formulário não são redesenhadas quando os dados mudam, para não perder o que está sendo digitado.
+function dataChanged(){
+  if(!VIEW.started) return;
+  if($('modal-overlay')){ SKIPPED_REFRESH = true; return; }
+  if(['form','calc','config'].includes(VIEW.name)) return;
+  render();
+}
+function render(){
+  const app = $('app');
+  app.className = '';
+  const r = {home:renderHome, calc:renderCalculadora, clientes:renderClientes, relatorios:renderRelatorios,
+    config:renderConfiguracoes, lista:renderLista, form:renderForm, detalhe:renderDetalhe, catalogo:renderCatalogo,
+    agenda:renderAgenda, agendaMes:renderAgendaMes}[VIEW.name] || renderHome;
+  r(VIEW.param);
+}
+function topbar(title, sub, back){
+  return `<header class="topbar">
+    ${back ? `<button class="icon-btn" data-act="go" data-arg="${back}" aria-label="Voltar">${ico('back')}</button>` : ''}
+    <div class="titles"><h1>${title}</h1>${sub ? `<div class="sub">${sub}</div>` : ''}</div>
+  </header>`;
+}
+
+// ---------------- ações (cliques e digitação) ----------------
+// Em vez de onclick="..." com textos dentro, cada botão tem data-act e data-arg.
+// Isso evita que um nome com apóstrofo (D'Ávila) quebre o botão.
+const ACT = {}, ON_INPUT = {}, ON_CHANGE = {};
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el || el.disabled) return;
+  const fn = ACT[el.dataset.act];
+  if(fn){ e.preventDefault(); fn(el.dataset.arg, el, e); }
+});
+document.addEventListener('input', e => { const fn = ON_INPUT[e.target.dataset.in]; if(fn) fn(e.target, e); });
+document.addEventListener('change', e => { const fn = ON_CHANGE[e.target.dataset.ch]; if(fn) fn(e.target, e); });
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  if($('confirm-overlay')) $('confirm-overlay').querySelector('[data-no]').click();
+  else if($('modal-overlay')) closeModal();
+});
+ACT.go = arg => { const [n, p] = String(arg).split(':'); go(n, p); };
+ACT.close = () => closeModal();
+
+// ---------------- janelas ----------------
+function openModal(inner, cls){
+  closeModal(true);
+  const ov = document.createElement('div');
+  ov.className = 'overlay'; ov.id = 'modal-overlay';
+  ov.innerHTML = `<div class="sheet ${cls || ''}" role="dialog" aria-modal="true">${inner}</div>`;
+  ov.addEventListener('click', e => { if(e.target === ov) closeModal(); });
+  document.body.appendChild(ov);
+  const f = ov.querySelector('input:not([type=hidden]):not([type=checkbox]),select,textarea');
+  if(f && window.matchMedia('(min-width:700px)').matches) f.focus();
+}
+function closeModal(silent){
+  const m = $('modal-overlay'); if(m) m.remove();
+  if(!silent && SKIPPED_REFRESH){ SKIPPED_REFRESH = false; dataChanged(); }
+}
+function closeAllOverlays(){ closeModal(true); const c = $('confirm-overlay'); if(c) c.remove(); SKIPPED_REFRESH = false; }
+function sheetHead(title){ return `<div class="sheet-head"><h3>${title}</h3><button class="icon-btn" data-act="close" aria-label="Fechar">${ico('close')}</button></div>`; }
+// confirmação dentro da página (no Claude, confirm() e alert() não aparecem)
+function confirmar({titulo, texto, ok = 'Confirmar', perigo = false}){
+  return new Promise(resolve => {
+    const ov = document.createElement('div');
+    ov.className = 'overlay'; ov.id = 'confirm-overlay';
+    ov.innerHTML = `<div class="sheet" role="alertdialog" aria-modal="true">
+      <div class="sheet-head"><h3>${esc(titulo)}</h3></div>
+      ${texto ? `<p class="sub" style="font-size:14.5px;margin:4px 0 0;">${esc(texto)}</p>` : ''}
+      <div class="sheet-actions">
+        <button class="btn" data-no>Cancelar</button>
+        <button class="btn ${perigo ? 'btn-danger' : 'btn-dark'}" data-yes>${esc(ok)}</button>
+      </div></div>`;
+    const done = v => { ov.remove(); resolve(v); };
+    ov.querySelector('[data-no]').onclick = () => done(false);
+    ov.querySelector('[data-yes]').onclick = () => done(true);
+    ov.addEventListener('click', e => { if(e.target === ov) done(false); });
+    document.body.appendChild(ov);
+    ov.querySelector('[data-yes]').focus();
+  });
+}
+
+// ---------------- contas ----------------
+function calcHoras(inicio, fim, pausaMin){
+  if(!inicio || !fim) return {minutos:0, horasDecimais:0, label:"00:00"};
+  const [ih, im] = inicio.split(":").map(Number);
+  const [fh, fm] = fim.split(":").map(Number);
+  let total = (fh*60 + fm) - (ih*60 + im);
+  if(total < 0) total += 24*60;           // passou da meia-noite
+  total -= (Number(pausaMin) || 0);
+  if(total < 0) total = 0;
+  const h = Math.floor(total/60), m = total % 60;
+  return { minutos: total, horasDecimais: total/60, label: String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') };
+}
+function horasLabel(h){ const tot = Math.round(h*60); return String(Math.floor(tot/60)).padStart(2,'0') + ':' + String(tot % 60).padStart(2,'0'); }
+function matUnitFinal(m){
+  const v = Number(m.valorUnit) || 0, mv = Number(m.margemValor) || 0;
+  if(!m.margemTipo) return cents(v);
+  return cents(m.margemTipo === 'pct' ? v * (1 + mv/100) : v + mv);
+}
+function orcTotal(o){
+  const ts = cents((o.servicos || []).reduce((s, i) => s + Number(i.valorTotal || 0), 0));
+  const tm = cents((o.materiais || []).reduce((s, i) => s + Number(i.valorTotal || 0), 0));
+  const recebido = cents((o.recibos || []).reduce((s, r) => s + Number(r.valor || 0), 0));
+  return { totalServicos: ts, totalMateriais: tm, total: cents(ts + tm), recebido, aReceber: cents(ts + tm - recebido) };
+}
+function foraDaGarantia(o){
+  if(o.status !== 'finalizado' || !o.finalizadoEm) return false;
+  const dias = (Date.now() - new Date(o.finalizadoEm).getTime()) / 86400000;
+  return dias > (o.garantiaDias || 90);
+}
+function lembreteEstado(l){
+  if(!l || !l.data) return null;
+  if(l.concluido) return 'done';
+  const d = new Date(l.data), now = new Date();
+  if(d < now) return 'late';
+  if(d.toDateString() === now.toDateString()) return 'today';
+  return 'sched';
+}
+// ---------------- agenda: datas e dados ----------------
+// O dia é guardado como texto 'AAAA-MM-DD' na data LOCAL (nada de toISOString, que usa UTC
+// e muda o dia depois das 21h em São Paulo). O horário fica em 'HH:MM' ou ''.
+// orcamento.agenda = {inicio, fim, hora} | null; STATE.compromissos = {id: {tipo:'compromisso'|'cobranca', titulo, data, hora, orcamentoId, concluido, criadoEm}}
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const SEMANA = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const p2 = n => String(n).padStart(2, '0');
+function diaDe(d){ return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); }
+function diaHoje(){ return diaDe(new Date()); }
+function dataDoDia(dia){ const [a, m, d] = String(dia).split('-').map(Number); return new Date(a, m - 1, d, 12); } // meio-dia: não escorrega
+function somarDias(dia, n){ const d = dataDoDia(dia); d.setDate(d.getDate() + n); return diaDe(d); }
+function diasEntre(a, b){ return Math.round((dataDoDia(b) - dataDoDia(a)) / 86400000) + 1; }
+function inicioSemana(dia){ return somarDias(dia, -dataDoDia(dia).getDay()); }
+function fmtDiaLongo(dia){ const d = dataDoDia(dia); return SEMANA[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()]; }
+function fmtDiaCurto(dia){ const d = dataDoDia(dia); return p2(d.getDate()) + '/' + p2(d.getMonth() + 1); }
+
+// número: AAAAMM-N, sempre o maior do mês + 1 (o original contava e repetia número depois de excluir)
+function gerarNumeroOrcamento(){
+  const d = new Date();
+  const base = d.getFullYear().toString() + String(d.getMonth()+1).padStart(2,'0');
+  let max = 0;
+  Object.values(STATE.orcamentos || {}).forEach(o => {
+    const m = String(o.numero || '').match(/^(\d{6})-(\d+)$/);
+    if(m && m[1] === base) max = Math.max(max, Number(m[2]));
+  });
+  return base + "-" + (max + 1);
+}
+function clienteDe(o){ return (o.clienteId && STATE.clientes[o.clienteId]) || {nome:o.clienteNome, telefone:o.clienteTelefone}; }
+
+// ---------------- campos de hora (digitando, sem o "rolinho") ----------------
+function timeFieldsHtml(prefix, hVal, mVal){
+  return `<div class="timefields">
+    <input id="${prefix}-h" type="text" inputmode="numeric" maxlength="2" placeholder="HH" value="${esc(hVal || '')}" data-in="hh" data-next="${prefix}-m" aria-label="Horas">
+    <span>:</span>
+    <input id="${prefix}-m" type="text" inputmode="numeric" maxlength="2" placeholder="MM" value="${esc(mVal || '')}" data-in="mm" aria-label="Minutos">
+  </div>`;
+}
+ON_INPUT.hh = el => {
+  el.value = el.value.replace(/\D/g, '').slice(0, 2);
+  if(Number(el.value) > 23) el.value = '23';
+  if(el.value.length === 2) $(el.dataset.next).focus();
+  if(el.closest('#calc-card')) calcRapida(); else if(el.closest('.sheet')) servicoRecalc();
+};
+ON_INPUT.mm = el => {
+  el.value = el.value.replace(/\D/g, '').slice(0, 2);
+  if(Number(el.value) > 59) el.value = '59';
+  if(el.closest('#calc-card')) calcRapida(); else if(el.closest('.sheet')) servicoRecalc();
+};
+function getTimeField(prefix){
+  const h = $(prefix + '-h').value, m = $(prefix + '-m').value;
+  if(h === "") return "";
+  return h.padStart(2,'0') + ":" + (m || '0').padStart(2,'0');
+}
+function toLocalInput(iso){
+  if(!iso) return '';
+  const d = new Date(iso); const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function splitHHMM(str){ if(!str) return {h:"", m:""}; const [h, m] = str.split(":"); return {h, m}; }
+ON_INPUT.phone = el => { el.value = maskPhone(el.value); };
+
+// ---------------- logo ----------------
+let LOGO_CACHE = {url:null, data:null};
+// a folha usa a logo como "data:", para o PDF sair certo
+async function prepararLogo(){
+  const c = STATE.config || {};
+  if(c.logoData || !c.logoUrl || LOGO_CACHE.url === c.logoUrl) return;
+  try {
+    const blob = await (await fetch(c.logoUrl)).blob();
+    const data = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); });
+    LOGO_CACHE = {url:c.logoUrl, data};
+    if(['detalhe','form'].includes(VIEW.name)) atualizarPreview();
+  } catch(e){ console.warn('logo', e); LOGO_CACHE = {url:c.logoUrl, data:null}; }
+}
+function logoSrc(){
+  const c = STATE.config || {};
+  if(c.logoData) return c.logoData;
+  if(c.logoUrl) return (LOGO_CACHE.url === c.logoUrl && LOGO_CACHE.data) || c.logoUrl;
+  return null;
+}
+// reduz para no máximo 600x240 (cabe no armazenamento e fica leve no PDF)
+function shrinkImage(file){
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, 600 / img.width, 240 / img.height);
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * scale)); c.height = Math.max(1, Math.round(img.height * scale));
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        resolve(c.toDataURL('image/png'));
+      };
+      img.onerror = () => reject(new Error('imagem inválida'));
+      img.src = r.result;
+    };
+    r.onerror = () => reject(new Error('não deu para ler o arquivo'));
+    r.readAsDataURL(file);
+  });
+}
+
+/* =====================================================================
+   INÍCIO
+   ===================================================================== */
+function renderHome(){
+  const c = STATE.config || {};
+  const orcs = Object.values(STATE.orcamentos || {});
+  const abertos = orcs.filter(o => ["negociacao","aprovado","execucao"].includes(o.status)).length;
+  const aReceber = orcs.filter(o => o.status !== 'perdido').reduce((s, o) => s + Math.max(0, orcTotal(o).aReceber), 0);
+  const lembretes = orcs.map(o => ({o, st:lembreteEstado(o.lembrete)}))
+    .filter(x => (x.st === 'late' || x.st === 'today') && !(x.o.lembrete.tipo === 'cobranca' && cobrancaPaga(x.o.id)))
+    .sort((a, b) => new Date(a.o.lembrete.data) - new Date(b.o.lembrete.data));
+  // compromissos soltos: cobranças de hoje ou atrasadas; outros só se atrasados
+  const hojeD = diaHoje(), agoraH = horaAgora();
+  const soltos = Object.values(STATE.compromissos || {}).filter(c => !c.concluido && c.data <= hojeD && !(c.tipo === 'cobranca' && cobrancaPaga(c.orcamentoId)))
+    .map(c => ({c, late: c.data < hojeD || (c.data === hojeD && !!c.hora && c.hora < agoraH)}))
+    .filter(x => x.c.tipo === 'cobranca' || x.late)
+    .sort((a, b) => (a.c.data + (a.c.hora || '99')).localeCompare(b.c.data + (b.c.hora || '99')));
+  const noRem = new Set(soltos.map(x => x.c.id));
+  const hojeItens = itensDoDia(hojeD).filter(i => !i.feito && !i.atrasado && (i.tipo === 'servico' || i.tipo === 'compromisso') && !noRem.has(i.compId));
+  $('app').innerHTML = `
+    <header class="topbar">
+      <div class="titles brand">${BRAND_SVG}<div style="min-width:0;"><div class="word">ORÇATOP</div><div class="sub" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.nomeEmpresa ? esc(c.nomeEmpresa) : 'Configure sua empresa para começar'}</div></div></div>
+      <button class="icon-btn" data-act="go" data-arg="config" aria-label="Configurações da empresa">${ico('gear')}</button>
+    </header>
+    <div class="content">
+      ${!c.nomeEmpresa ? `<button class="big-action" data-act="go" data-arg="config">${ico('gear')}<span><span class="t">Configure sua empresa</span><span class="d">Nome, logo, telefone e Pix aparecem nos documentos</span></span></button>` : ''}
+      ${lembretes.length ? `<div class="rem-list" aria-label="Lembretes">
+        ${lembretes.map(({o, st}) => `<button class="rem-item ${st === 'today' ? 'today' : ''}" data-act="abrir" data-arg="${o.id}">${ico('bell')}<span style="min-width:0;"><span class="t">${esc(o.lembrete.descricao || 'Lembrete')}</span><span class="d">${st === 'late' ? 'Atrasado' : 'Hoje'} · ${fmtDateTime(o.lembrete.data)} · ${esc(o.clienteNome || '')} (nº ${esc(o.numero)})</span></span></button>`).join('')}
+      </div>` : ''}
+      ${soltos.length ? `<div class="rem-list" aria-label="Cobranças e compromissos">
+        ${soltos.map(({c, late}) => { const o = c.orcamentoId && STATE.orcamentos[c.orcamentoId];
+          return `<button class="rem-item ${late ? '' : 'today'}" data-act="compAbrir" data-arg="${esc(c.id)}">${ico('bell')}<span style="min-width:0;"><span class="t">${esc(c.titulo)}</span><span class="d">${late ? 'Atrasado' : 'Hoje'} · ${fmtDiaCurto(c.data)}${c.hora ? ' às ' + esc(c.hora) : ''}${o ? ' · ' + esc(orcSub(o)) : ''}</span></span></button>`; }).join('')}
+      </div>` : ''}
+      ${hojeItens.length ? `<div class="card hoje-agenda">
+        <div class="card-head"><h2>Hoje na agenda</h2><button class="link" data-act="go" data-arg="agenda">Ver agenda</button></div>
+        <div class="day-items">${hojeItens.map(itemHtml).join('')}</div>
+      </div>` : ''}
+      <div class="hero-actions">
+        <button class="big-action primary" data-act="novo">${ico('plus')}<span><span class="t">Novo orçamento</span><span class="d">Cliente, serviços e materiais, com a folha pronta para enviar</span></span></button>
+        <button class="big-action" data-act="go" data-arg="calc">${ico('clock')}<span><span class="t">Calcular hora trabalhada</span><span class="d">Início, fim e valor, sem escolher cliente antes</span></span></button>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="sub">Em andamento</div><div class="v num">${abertos}</div></div>
+        <div class="stat"><div class="sub">A receber</div><div class="v num">${fmtMoney(aReceber)}</div></div>
+      </div>
+      <div class="navgrid">
+        <button class="navcard wide" data-act="go" data-arg="agenda">${ico('calendar')}<span class="lbl2">Agenda</span><span class="sub">Serviços e compromissos</span></button>
+        <button class="navcard" data-act="go" data-arg="lista">${ico('doc')}<span class="lbl2">Orçamentos</span><span class="sub">${orcs.length} no total</span></button>
+        <button class="navcard" data-act="go" data-arg="clientes">${ico('users')}<span class="lbl2">Clientes</span><span class="sub">${Object.keys(STATE.clientes).length} cadastrados</span></button>
+        <button class="navcard" data-act="go" data-arg="catalogo">${ico('box')}<span class="lbl2">Catálogo</span><span class="sub">Serviços e materiais salvos</span></button>
+        <button class="navcard" data-act="go" data-arg="relatorios">${ico('chart')}<span class="lbl2">Relatórios</span><span class="sub">Recebido por mês</span></button>
+      </div>
+      ${modoNota()}
+    </div>`;
+}
+function modoNota(){
+  return MODO === 'nuvem'
+    ? `<div class="mode-note">${ico('cloud')}<span>Dados salvos na nuvem do Claude: aparecem iguais no celular e no computador.</span></div>`
+    : `<div class="mode-note">${ico('disk')}<span>Dados salvos só neste navegador. Baixe um backup de vez em quando em <button class="link" data-act="go" data-arg="config">Configurações</button>.</span></div>`;
+}
+ACT.novo = () => go('form', null);
+ACT.abrir = id => go('detalhe', id);
+
+/* =====================================================================
+   CALCULADORA RÁPIDA (atalho)
+   ===================================================================== */
+let CALC_RESULT = null;
+function renderCalculadora(){
+  CALC_RESULT = null;
+  $('app').innerHTML = `
+    ${topbar("Calcular hora trabalhada", "", "home")}
+    <div class="content">
+      <div class="card" id="calc-card">
+        <div class="row">
+          <div class="field"><label for="c-inicio-h">Início</label>${timeFieldsHtml('c-inicio')}</div>
+          <div class="field"><label for="c-fim-h">Fim</label>${timeFieldsHtml('c-fim')}</div>
+        </div>
+        <div class="row stack">
+          <div class="field"><label for="c-pausa">Pausa (minutos)</label><input type="text" inputmode="numeric" id="c-pausa" placeholder="0" data-in="calc"></div>
+          <div class="field"><label for="c-preco">Preço por hora</label><div class="money-in"><input type="text" inputmode="decimal" id="c-preco" placeholder="0,00" data-in="calc"></div></div>
+        </div>
+      </div>
+      <div class="card" id="c-resultado">
+        <div class="sum-line"><span>Tempo trabalhado</span><span class="num" id="c-tempo">00:00</span></div>
+        <div class="sum-line total"><span>Valor total</span><span class="num" id="c-valor">R$ 0,00</span></div>
+        <button class="btn btn-primary btn-block" style="margin-top:14px;" data-act="calcSalvar" id="c-salvar" disabled>Salvar como orçamento finalizado</button>
+        <p class="hint">Cria um orçamento com a mão de obra, já como finalizado, no nome do cliente que você escolher.</p>
+      </div>
+    </div>`;
+}
+ON_INPUT.calc = () => calcRapida();
+function calcRapida(){
+  const inicio = getTimeField('c-inicio'), fim = getTimeField('c-fim');
+  const pausa = parseNum($('c-pausa').value), preco = parseNum($('c-preco').value);
+  const r = calcHoras(inicio, fim, pausa);
+  const valor = cents(r.horasDecimais * preco);
+  $('c-tempo').textContent = r.label;
+  $('c-valor').textContent = fmtMoney(valor);
+  const ok = !!(inicio && fim && r.minutos > 0);
+  $('c-salvar').disabled = !ok;
+  CALC_RESULT = ok ? {inicio, fim, pausaMin:pausa, precoHora:preco, minutos:r.minutos, label:r.label, valor} : null;
+}
+ACT.calcSalvar = () => {
+  if(!CALC_RESULT) return;
+  openModal(`${sheetHead('Salvar registro')}
+    <div class="field"><label for="m-cliente-nome">Nome do cliente</label>
+      <input type="text" id="m-cliente-nome" placeholder="Digite para buscar ou criar" autocomplete="off" data-in="acCliente" data-lista="m-cliente-lista" data-idfield="m-cliente-id">
+      <div id="m-cliente-lista"></div><input type="hidden" id="m-cliente-id" value=""></div>
+    <div class="sheet-actions"><button class="btn" data-act="close">Cancelar</button><button class="btn btn-primary" data-act="calcConfirmar">Salvar</button></div>`);
+};
+ACT.calcConfirmar = async (arg, btn) => {
+  const nome = $('m-cliente-nome').value.trim();
+  let clienteId = $('m-cliente-id').value;
+  if(!nome){ toast("Informe o nome do cliente."); return; }
+  btn.disabled = true;
+  try {
+    if(!clienteId){
+      const existente = Object.values(STATE.clientes).find(c => (c.nome || '').toLowerCase() === nome.toLowerCase());
+      clienteId = existente ? existente.id : (await db.collection("clientes").add({nome, telefone:"", email:"", endereco:"", cpfCnpj:""})).id;
+    }
+    const cliente = STATE.clientes[clienteId] || {nome};
+    const C = CALC_RESULT;
+    const servico = { id:uid(), titulo:"Mão de obra", descricao:"", quantidade:1, porHora:true,
+      horaDetalhe:{modo:'horario', inicio:C.inicio, fim:C.fim, pausaMin:C.pausaMin, precoHora:C.precoHora, label:C.label, horas:cents(C.minutos/60)},
+      valorUnit:C.valor, valorTotal:C.valor };
+    const ref = await salvando(() => db.collection("orcamentos").add({
+      numero:gerarNumeroOrcamento(), criadoEm:nowISO(), clienteId, clienteNome:cliente.nome, clienteTelefone:cliente.telefone || "",
+      status:"finalizado", finalizadoEm:nowISO(), descricaoAtividades:"",
+      servicos:[servico], materiais:[], recibos:[], lembrete:null, garantiaDias:STATE.config.garantiaDiasPadrao || 90,
+    }));
+    closeModal(true);
+    toast('Registro salvo.');
+    go('detalhe', ref.id);
+  } catch(e){ btn.disabled = false; }
+};
+// autocompletar de clientes (genérico)
+ON_INPUT.acCliente = el => {
+  $(el.dataset.idfield).value = "";
+  const q = el.value.trim().toLowerCase(), lista = $(el.dataset.lista);
+  if(q.length < 2){ lista.innerHTML = ""; return; }
+  const matches = Object.values(STATE.clientes).filter(c => (c.nome || '').toLowerCase().includes(q)).slice(0, 6);
+  lista.innerHTML = matches.length ? `<div class="autolist">${matches.map(c =>
+    `<button type="button" class="autoitem" data-act="acClientePick" data-arg="${c.id}" data-target="${el.id}"><b>${esc(c.nome)}</b><span>${esc(c.telefone || 'sem telefone')}</span></button>`).join('')}</div>` : "";
+};
+ACT.acClientePick = (id, btn) => {
+  const input = $(btn.dataset.target), c = STATE.clientes[id];
+  if(!c) return;
+  if(input.id === 'f-cliente-nome'){ formSelecionarCliente(id); return; }
+  input.value = c.nome; $(input.dataset.idfield).value = id; $(input.dataset.lista).innerHTML = "";
+};
+
+/* =====================================================================
+   CONFIGURAÇÕES DA EMPRESA (+ backup)
+   ===================================================================== */
+let CFG_LOGO = null; // logo nova ainda não salva: {data} ou {remove:true}
+function renderConfiguracoes(){
+  CFG_LOGO = null;
+  const c = STATE.config || {};
+  const tem = k => c[k] ? 'checked' : '';
+  const v1 = MODO === 'local' ? lerV1() : null;
+  $('app').innerHTML = `
+    ${topbar("Configurações da empresa", "", "home")}
+    <div class="content">
+      <div class="card">
+        <div class="card-head"><h2>Sua empresa</h2></div>
+        <div class="logo-pick">
+          <div class="logo-box" id="cfg-logo-box">${logoSrc() ? `<img src="${esc(logoSrc())}" alt="Logo atual">` : 'Sem logo'}</div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">
+            <label class="btn btn-sm file-btn">Escolher logo<input type="file" accept="image/png,image/jpeg,image/webp" id="cfg-logo-file" data-ch="logo"></label>
+            <button class="link danger" data-act="logoRemover" ${logoSrc() ? '' : 'hidden'} id="cfg-logo-rm">Remover logo</button>
+          </div>
+        </div>
+        <div class="field"><label for="cfg-nome">Nome da empresa ou prestador</label><input type="text" id="cfg-nome" value="${esc(c.nomeEmpresa || "")}" placeholder="Ex: BuscaTop Serviços"></div>
+        <div class="row stack">
+          <div class="field"><label for="cfg-cnpj">CNPJ ou CPF</label><input type="text" id="cfg-cnpj" value="${esc(c.cnpj || "")}"></div>
+          <div class="field"><label for="cfg-telefone">Telefone</label><input type="tel" id="cfg-telefone" value="${esc(c.telefone || "")}" placeholder="(48) 99999-9999" data-in="phone"></div>
+        </div>
+        <div class="field"><label for="cfg-email">E-mail (opcional)</label><input type="email" id="cfg-email" value="${esc(c.email || "")}"></div>
+        <div class="row">
+          <div class="field" style="flex:3;"><label for="cfg-cidade">Cidade</label><input type="text" id="cfg-cidade" value="${esc(c.cidade || "")}"></div>
+          <div class="field" style="flex:1;"><label for="cfg-estado">UF</label><input type="text" id="cfg-estado" value="${esc(c.estado || "")}" maxlength="2" style="text-transform:uppercase;"></div>
+        </div>
+        <div class="field"><label for="cfg-pix">Chave Pix (opcional)</label><input type="text" id="cfg-pix" value="${esc(c.pixChave || "")}"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Padrões do documento</h2></div>
+        <div class="row stack">
+          <div class="field"><label for="cfg-validade">Validade do orçamento (dias)</label><input type="text" inputmode="numeric" id="cfg-validade" value="${c.validadeDias || 7}"></div>
+          <div class="field"><label for="cfg-garantia">Garantia da mão de obra (dias)</label><input type="text" inputmode="numeric" id="cfg-garantia" value="${c.garantiaDiasPadrao || 90}"></div>
+        </div>
+        <div class="field"><label for="cfg-obs">Observações padrão (opcional)</label><textarea id="cfg-obs" placeholder="Ex: 50% de entrada e o restante na entrega.">${esc(c.observacoesPadrao || '')}</textarea>
+          <p class="hint">Já vem escrito em cada orçamento novo. Dá para mudar em cada um.</p></div>
+        ${[['cfg-mostrar-pix','mostrarPix','Mostrar chave Pix no documento'],['cfg-mostrar-endereco','mostrarEndereco','Mostrar endereço do cliente'],
+           ['cfg-mostrar-doc-cliente','mostrarCpfCnpjCliente','Mostrar CPF/CNPJ do cliente'],['cfg-assinatura-empresa','mostrarAssinaturaEmpresa','Linha de assinatura da empresa'],
+           ['cfg-assinatura-cliente','mostrarAssinaturaCliente','Linha de assinatura do cliente']].map(([id, k, l]) =>
+          `<div class="toggle-row"><span id="${id}-l">${l}</span><span class="switch"><input type="checkbox" id="${id}" aria-labelledby="${id}-l" ${tem(k)}><span class="slider"></span></span></div>`).join('')}
+      </div>
+
+      <button class="btn btn-primary btn-block" data-act="cfgSalvar">Salvar configurações</button>
+
+      <div class="card">
+        <div class="card-head"><h2>Backup</h2></div>
+        ${modoNota()}
+        <div class="btn-group" style="margin-top:12px;">
+          <button class="btn" data-act="backup">${ico('download')} Baixar backup</button>
+          <label class="btn file-btn">Restaurar backup<input type="file" accept="application/json,.json" id="cfg-restore" data-ch="restore"></label>
+        </div>
+        <p class="hint">O backup é um arquivo .json com clientes, orçamentos, catálogo e empresa. Restaurar junta com o que já existe, sem apagar nada. Também aceita o backup da calculadora antiga.</p>
+        ${v1 ? `<button class="btn btn-block" style="margin-top:12px;" data-act="importarV1">Trazer ${v1.historico.length} orçamento(s) da calculadora antiga</button>` : ''}
+      </div>
+    </div>`;
+}
+ON_CHANGE.logo = async el => {
+  const file = el.files[0]; if(!file) return;
+  try {
+    CFG_LOGO = {data: await shrinkImage(file)};
+    $('cfg-logo-box').innerHTML = `<img src="${CFG_LOGO.data}" alt="Logo nova">`;
+    $('cfg-logo-rm').hidden = false;
+    toast('Logo escolhida. Toque em "Salvar configurações".');
+  } catch(e){ toast('Não deu para usar essa imagem: ' + e.message); }
+  el.value = '';
+};
+ACT.logoRemover = () => { CFG_LOGO = {remove:true}; $('cfg-logo-box').textContent = 'Sem logo'; $('cfg-logo-rm').hidden = true; };
+ACT.cfgSalvar = async (arg, btn) => {
+  const old = STATE.config || {};
+  const data = {
+    nomeEmpresa:$('cfg-nome').value.trim(), cnpj:$('cfg-cnpj').value.trim(), telefone:$('cfg-telefone').value.trim(),
+    email:$('cfg-email').value.trim(), cidade:$('cfg-cidade').value.trim(), estado:$('cfg-estado').value.trim().toUpperCase(),
+    pixChave:$('cfg-pix').value.trim(),
+    validadeDias:parseInt($('cfg-validade').value, 10) || 7, garantiaDiasPadrao:parseInt($('cfg-garantia').value, 10) || 90,
+    observacoesPadrao:$('cfg-obs').value.trim(),
+    mostrarPix:$('cfg-mostrar-pix').checked, mostrarEndereco:$('cfg-mostrar-endereco').checked,
+    mostrarCpfCnpjCliente:$('cfg-mostrar-doc-cliente').checked, mostrarAssinaturaEmpresa:$('cfg-assinatura-empresa').checked,
+    mostrarAssinaturaCliente:$('cfg-assinatura-cliente').checked,
+    logoAssetId:old.logoAssetId || null, logoUrl:old.logoUrl || null, logoContentType:old.logoContentType || null, logoData:old.logoData || null,
+  };
+  btn.disabled = true; btn.textContent = 'Salvando…';
+  try {
+    if(CFG_LOGO && CFG_LOGO.remove){ Object.assign(data, {logoAssetId:null, logoUrl:null, logoContentType:null, logoData:null}); }
+    else if(CFG_LOGO && CFG_LOGO.data){
+      let subiu = false;
+      if(assetsCap){ // na nuvem: a logo vai para o armazenamento de arquivos
+        try {
+          const blob = await (await fetch(CFG_LOGO.data)).blob();
+          const res = await assetsCap.upload(blob);
+          Object.assign(data, {logoAssetId:res.id, logoUrl:res.url, logoContentType:res.contentType, logoData:null});
+          LOGO_CACHE = {url:res.url, data:CFG_LOGO.data};
+          subiu = true;
+        } catch(e){ console.warn('upload da logo', e); }
+      }
+      if(!subiu) Object.assign(data, {logoAssetId:null, logoUrl:null, logoContentType:null, logoData:CFG_LOGO.data});
+    }
+    await salvando(() => db.doc("config/empresa").set(data));
+    toast("Configurações salvas.");
+    go('home');
+  } catch(e){ btn.disabled = false; btn.textContent = 'Salvar configurações'; }
+};
+
+// ---------- backup ----------
+function montarBackup(){
+  const semId = col => { const o = {}; Object.values(col).forEach(d => { const c = Object.assign({}, d); delete c.id; o[d.id] = c; }); return o; };
+  return { app:'OrcaTop', versao:2, exportadoEm:nowISO(), dados:{
+    clientes:semId(STATE.clientes), catalogoServicos:semId(STATE.catServicos), catalogoMateriais:semId(STATE.catMateriais),
+    orcamentos:semId(STATE.orcamentos), compromissos:semId(STATE.compromissos), config:{empresa:STATE.config || {}} } };
+}
+ACT.backup = async () => {
+  const json = JSON.stringify(montarBackup(), null, 2);
+  await entregarArquivo(new Blob([json], {type:'application/json'}), `backup-orcatop-${new Date().toISOString().slice(0,10)}.json`, 'Backup baixado.');
+};
+ON_CHANGE.restore = el => {
+  const file = el.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = async () => {
+    try {
+      const data = JSON.parse(r.result);
+      let pacote;
+      if(data && data.app === 'OrcaTop' && data.dados) pacote = data.dados;
+      else if(data && Array.isArray(data.historico)) pacote = converterV1(data);
+      else throw new Error('esse arquivo não é um backup do OrçaTop');
+      const n = await juntarPacote(pacote);
+      toast(`Backup restaurado: ${n.orcamentos} orçamento(s), ${n.clientes} cliente(s), ${n.catalogo} item(ns) de catálogo e ${n.compromissos} compromisso(s) novos.`);
+      render();
+    } catch(e){ toast('Não foi possível restaurar: ' + e.message); }
+  };
+  r.readAsText(file);
+  el.value = '';
+};
+// junta sem apagar: só entra o que ainda não existe (mesmo id)
+async function juntarPacote(p){
+  const cont = {orcamentos:0, clientes:0, catalogo:0, compromissos:0};
+  const mapas = [['clientes', STATE.clientes, 'clientes'], ['catalogoServicos', STATE.catServicos, 'catalogo'],
+                 ['catalogoMateriais', STATE.catMateriais, 'catalogo'], ['orcamentos', STATE.orcamentos, 'orcamentos'], ['compromissos', STATE.compromissos, 'compromissos']];
+  for(const [col, atual, k] of mapas){
+    for(const [id, doc] of Object.entries(p[col] || {})){
+      if(atual[id]) continue;
+      await db.collection(col).doc(id).set(doc);
+      cont[k]++;
+    }
+  }
+  const emp = p.config && p.config.empresa;
+  if(emp && !STATE.config.nomeEmpresa && Object.keys(emp).length) await db.doc('config/empresa').set(emp);
+  return cont;
+}
+// ---------- calculadora antiga (v1, 2026-10-28) ----------
+function lerV1(){
+  try { const d = JSON.parse(localStorage.getItem(V1_KEY) || 'null'); return d && Array.isArray(d.historico) && d.historico.length ? d : null; }
+  catch(e){ return null; }
+}
+function converterV1(v1){
+  const out = {clientes:{}, catalogoServicos:{}, catalogoMateriais:{}, orcamentos:{}, config:{}};
+  const cliIds = {};
+  (v1.historico || []).forEach(h => {
+    const q = h.dados || {}; const cli = q.cliente || {};
+    const nome = (cli.nome || h.cliente || 'Cliente sem nome').trim();
+    const key = nome.toLowerCase();
+    if(!cliIds[key]){
+      cliIds[key] = 'v1c-' + key.replace(/[^a-z0-9]+/g, '-').slice(0, 30) + '-' + Object.keys(cliIds).length;
+      out.clientes[cliIds[key]] = {nome, telefone:cli.telefone || '', email:cli.email || '', endereco:cli.endereco || '', cpfCnpj:''};
+    }
+    const mult = q.margem && q.margem.ativa ? (Number(q.margem.pct) || 0) : 0;
+    let servicos = [];
+    if(q.modo === 'hora'){
+      const hrs = Number(q.hora && q.hora.horas) || 0, ph = Number(q.hora && q.hora.valor) || 0, v = cents(hrs * ph);
+      if(hrs || ph) servicos.push({id:uid(), titulo:(q.hora.descricao || 'Mão de obra'), descricao:'', quantidade:1, porHora:true,
+        horaDetalhe:{modo:'estimado', horas:hrs, precoHora:ph, label:horasLabel(hrs)}, valorUnit:v, valorTotal:v});
+    } else {
+      servicos = (q.servicos || []).filter(s => s.name || s.price).map(s => ({id:uid(), titulo:s.name || 'Serviço', descricao:s.desc || '', quantidade:1, porHora:false, valorUnit:cents(s.price || 0), valorTotal:cents(s.price || 0)}));
+    }
+    const materiais = (q.materiais || []).filter(m => m.desc || m.price).map(m => {
+      const it = {id:uid(), titulo:m.desc || 'Material', unidade:m.unit || 'und', quantidade:Number(m.qty) || 0, valorUnit:cents(m.price || 0), margemTipo:mult ? 'pct' : null, margemValor:mult};
+      it.valorTotal = cents(matUnitFinal(it) * it.quantidade); return it;
+    });
+    out.orcamentos['v1-' + h.id] = {numero:String(h.numero), criadoEm:h.salvoEm || nowISO(), clienteId:cliIds[key], clienteNome:nome, clienteTelefone:cli.telefone || '',
+      status:'negociacao', descricaoAtividades:q.observacoes || '', servicos, materiais, recibos:[], lembrete:null, garantiaDias:90, finalizadoEm:null};
+  });
+  ((v1.catalogo && v1.catalogo.servicos) || []).forEach((s, i) => { out.catalogoServicos['v1s-' + i] = {titulo:s.name, valor:s.price || 0, descricao:s.desc || ''}; });
+  ((v1.catalogo && v1.catalogo.materiais) || []).forEach((m, i) => { out.catalogoMateriais['v1m-' + i] = {titulo:m.desc, unidade:m.unit || 'und', valor:m.price || 0}; });
+  if(v1.empresa && v1.empresa.nome){
+    out.config.empresa = {nomeEmpresa:v1.empresa.nome, telefone:v1.empresa.contato || '', validadeDias:7, garantiaDiasPadrao:90,
+      logoData:(v1.empresa.logoId && v1.logos && v1.logos[v1.empresa.logoId]) || null};
+  }
+  return out;
+}
+ACT.importarV1 = async (arg, btn) => {
+  const v1 = lerV1(); if(!v1) return;
+  btn.disabled = true;
+  try {
+    const n = await juntarPacote(converterV1(v1));
+    toast(`Trazidos ${n.orcamentos} orçamento(s) e ${n.clientes} cliente(s) da calculadora antiga.`);
+    go('lista');
+  } catch(e){ btn.disabled = false; toast('Não foi possível importar: ' + e.message); }
+};
+
+/* =====================================================================
+   CLIENTES
+   ===================================================================== */
+let BUSCA_CLI = '';
+function renderClientes(){
+  const all = Object.values(STATE.clientes).sort((a, b) => (a.nome || "").localeCompare(b.nome || "", 'pt-BR'));
+  const q = BUSCA_CLI.trim().toLowerCase();
+  const list = q ? all.filter(c => (c.nome || '').toLowerCase().includes(q) || onlyDigits(c.telefone).includes(onlyDigits(q) || '§')) : all;
+  const nOrc = id => Object.values(STATE.orcamentos).filter(o => o.clienteId === id).length;
+  $('app').innerHTML = `
+    ${topbar("Clientes", all.length + " cadastrados", "home")}
+    <div class="content">
+      ${all.length ? `<div class="search">${ico('search')}<input type="search" id="cli-busca" placeholder="Buscar por nome ou telefone" value="${esc(BUSCA_CLI)}" data-in="buscaCli" aria-label="Buscar clientes"></div>` : ''}
+      <div class="card" style="padding-block:4px;">
+        ${list.length ? `<div class="items">${list.map(c => `
+          <div class="item-row" style="align-items:center;">
+            <div><div class="item-main">${esc(c.nome)}</div><div class="item-sub">${esc(c.telefone || "sem telefone")} · ${nOrc(c.id)} orçamento(s)</div></div>
+            <button class="btn btn-sm" data-act="cliEditar" data-arg="${c.id}">Editar</button>
+          </div>`).join('')}</div>`
+        : `<div class="empty-big">${all.length ? 'Nenhum cliente com essa busca.' : 'Nenhum cliente ainda. Toque no + para adicionar, ou crie um direto no orçamento.'}</div>`}
+      </div>
+    </div>
+    <button class="fab" data-act="cliEditar" aria-label="Novo cliente">${ico('plus')}</button>`;
+}
+ON_INPUT.buscaCli = el => { BUSCA_CLI = el.value; const pos = el.selectionStart; renderClientes(); const n = $('cli-busca'); n.focus(); n.setSelectionRange(pos, pos); };
+ACT.cliEditar = id => {
+  const c = id ? STATE.clientes[id] : {};
+  openModal(`${sheetHead(id ? "Editar cliente" : "Novo cliente")}
+    <div class="field"><label for="cl-nome">Nome</label><input type="text" id="cl-nome" value="${esc(c.nome || "")}"></div>
+    <div class="field"><label for="cl-tel">Telefone / celular</label><input type="tel" id="cl-tel" value="${esc(c.telefone || "")}" data-in="phone" placeholder="(48) 99999-9999"></div>
+    <div class="field"><label for="cl-email">E-mail (opcional)</label><input type="email" id="cl-email" value="${esc(c.email || "")}"></div>
+    <div class="field"><label for="cl-end">Endereço (opcional)</label><input type="text" id="cl-end" value="${esc(c.endereco || "")}"></div>
+    <div class="field"><label for="cl-doc">CPF ou CNPJ (opcional)</label><input type="text" id="cl-doc" value="${esc(c.cpfCnpj || "")}"></div>
+    <div class="sheet-actions">
+      ${id ? `<button class="btn btn-danger" data-act="cliExcluir" data-arg="${id}" aria-label="Excluir cliente">${ico('trash')}</button>` : ""}
+      <button class="btn" data-act="close">Cancelar</button>
+      <button class="btn btn-primary" data-act="cliSalvar" data-arg="${id || ''}">Salvar</button>
+    </div>`);
+};
+ACT.cliSalvar = async (id, btn) => {
+  const data = { nome:$('cl-nome').value.trim(), telefone:$('cl-tel').value.trim(), email:$('cl-email').value.trim(), endereco:$('cl-end').value.trim(), cpfCnpj:$('cl-doc').value.trim() };
+  if(!data.nome){ toast("O nome é obrigatório."); return; }
+  btn.disabled = true;
+  try {
+    if(id) await salvando(() => db.collection("clientes").doc(id).set(data));
+    else await salvando(() => db.collection("clientes").add(data));
+    closeModal(); toast('Cliente salvo.');
+  } catch(e){ btn.disabled = false; }
+};
+ACT.cliExcluir = async id => {
+  const n = Object.values(STATE.orcamentos).filter(o => o.clienteId === id).length;
+  if(!await confirmar({titulo:'Excluir este cliente?', texto: n ? `Os ${n} orçamento(s) dele continuam salvos, com o nome.` : '', ok:'Excluir', perigo:true})) return;
+  await salvando(() => db.collection("clientes").doc(id).delete());
+  closeModal(); toast('Cliente excluído.');
+};
+
+/* =====================================================================
+   CATÁLOGO (serviços e materiais salvos)
+   ===================================================================== */
+function renderCatalogo(){
+  const sv = Object.values(STATE.catServicos).sort((a, b) => (a.titulo || '').localeCompare(b.titulo || '', 'pt-BR'));
+  const mt = Object.values(STATE.catMateriais).sort((a, b) => (a.titulo || '').localeCompare(b.titulo || '', 'pt-BR'));
+  const row = (x, kind, sub) => `<div class="item-row" style="align-items:center;">
+      <div><div class="item-main">${esc(x.titulo)}</div>${sub ? `<div class="item-sub">${sub}</div>` : ''}</div>
+      <div class="item-val">${fmtMoney(x.valor)}${kind === 'm' ? `<span class="sub" style="font-weight:400;"> /${esc(x.unidade || 'und')}</span>` : ''}</div>
+      <button class="icon-btn" data-act="catEditar" data-arg="${kind}:${x.id}" aria-label="Editar ${esc(x.titulo)}">${ico('edit')}</button>
+    </div>`;
+  $('app').innerHTML = `
+    ${topbar("Catálogo", "Comece a digitar o nome no orçamento e escolha a sugestão", "home")}
+    <div class="content">
+      <div class="card">
+        <div class="card-head"><h2>Serviços</h2><button class="btn btn-sm" data-act="catEditar" data-arg="s:">${ico('plus')} Serviço</button></div>
+        ${sv.length ? `<div class="items">${sv.map(x => row(x, 's', x.descricao ? esc(x.descricao.slice(0, 80)) : '')).join('')}</div>` : '<p class="empty">Nenhum serviço salvo ainda. No orçamento, ligue "Salvar no catálogo" ao adicionar um.</p>'}
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Materiais</h2><button class="btn btn-sm" data-act="catEditar" data-arg="m:">${ico('plus')} Material</button></div>
+        ${mt.length ? `<div class="items">${mt.map(x => row(x, 'm', '')).join('')}</div>` : '<p class="empty">Nenhum material salvo ainda.</p>'}
+      </div>
+    </div>`;
+}
+ACT.catEditar = arg => {
+  const [kind, id] = arg.split(':');
+  const col = kind === 's' ? STATE.catServicos : STATE.catMateriais;
+  const x = id ? col[id] : {};
+  openModal(`${sheetHead((id ? 'Editar ' : 'Novo ') + (kind === 's' ? 'serviço' : 'material'))}
+    <div class="field"><label for="ct-titulo">Nome</label><input type="text" id="ct-titulo" value="${esc(x.titulo || '')}"></div>
+    ${kind === 'm' ? `<div class="field"><label for="ct-un">Unidade</label><input type="text" id="ct-un" value="${esc(x.unidade || 'und')}" list="unidades"></div>` : ''}
+    <div class="field"><label for="ct-valor">Valor</label><div class="money-in"><input type="text" inputmode="decimal" id="ct-valor" value="${numIn(x.valor)}" placeholder="0,00"></div></div>
+    ${kind === 's' ? `<div class="field"><label for="ct-desc">Descrição (opcional)</label><textarea id="ct-desc">${esc(x.descricao || '')}</textarea></div>` : ''}
+    <div class="sheet-actions">
+      ${id ? `<button class="btn btn-danger" data-act="catExcluir" data-arg="${arg}" aria-label="Remover do catálogo">${ico('trash')}</button>` : ''}
+      <button class="btn" data-act="close">Cancelar</button>
+      <button class="btn btn-primary" data-act="catSalvar" data-arg="${arg}">Salvar</button>
+    </div>`);
+};
+ACT.catSalvar = async (arg, btn) => {
+  const [kind, id] = arg.split(':');
+  const titulo = $('ct-titulo').value.trim();
+  if(!titulo){ toast('Dê um nome ao item.'); return; }
+  const data = kind === 's' ? {titulo, valor:cents(parseNum($('ct-valor').value)), descricao:$('ct-desc').value.trim()}
+                            : {titulo, unidade:$('ct-un').value.trim() || 'und', valor:cents(parseNum($('ct-valor').value))};
+  const col = db.collection(kind === 's' ? 'catalogoServicos' : 'catalogoMateriais');
+  btn.disabled = true;
+  try { await salvando(() => id ? col.doc(id).set(data) : col.add(data)); closeModal(); toast('Catálogo atualizado.'); }
+  catch(e){ btn.disabled = false; }
+};
+ACT.catExcluir = async arg => {
+  const [kind, id] = arg.split(':');
+  if(!await confirmar({titulo:'Remover do catálogo?', texto:'Os orçamentos que já usam o item não mudam.', ok:'Remover', perigo:true})) return;
+  await salvando(() => db.collection(kind === 's' ? 'catalogoServicos' : 'catalogoMateriais').doc(id).delete());
+  closeModal();
+};
+// guarda no catálogo sem repetir (mesmo nome = atualiza)
+async function salvarNoCatalogo(kind, data){
+  const colName = kind === 's' ? 'catalogoServicos' : 'catalogoMateriais';
+  const atual = kind === 's' ? STATE.catServicos : STATE.catMateriais;
+  const igual = Object.values(atual).find(x => (x.titulo || '').trim().toLowerCase() === data.titulo.trim().toLowerCase());
+  if(igual) await db.collection(colName).doc(igual.id).set(data);
+  else await db.collection(colName).add(data);
+}
+
+/* =====================================================================
+   LISTA DE ORÇAMENTOS
+   ===================================================================== */
+let FILTRO_STATUS = "todos", BUSCA_ORC = '';
+function renderLista(){
+  const all = Object.values(STATE.orcamentos).sort((a, b) => new Date(b.criadoEm || 0) - new Date(a.criadoEm || 0));
+  const q = BUSCA_ORC.trim().toLowerCase();
+  let list = FILTRO_STATUS === "todos" ? all : all.filter(o => o.status === FILTRO_STATUS);
+  if(q) list = list.filter(o => (o.clienteNome || '').toLowerCase().includes(q) || String(o.numero || '').toLowerCase().includes(q));
+  const count = s => all.filter(o => o.status === s).length;
+  $('app').innerHTML = `
+    ${topbar("Orçamentos", all.length + " no total", "home")}
+    <div class="content">
+      <div class="search">${ico('search')}<input type="search" id="orc-busca" placeholder="Buscar por cliente ou número" value="${esc(BUSCA_ORC)}" data-in="buscaOrc" aria-label="Buscar orçamentos"></div>
+      <div class="filterbar" role="group" aria-label="Filtrar por etapa">
+        <button class="chip ${FILTRO_STATUS === 'todos' ? 'on' : ''}" data-act="filtro" data-arg="todos">Todos</button>
+        ${STATUS_ORDER.map(s => `<button class="chip ${FILTRO_STATUS === s ? 'on' : ''}" data-act="filtro" data-arg="${s}">${STATUS_LABEL[s]} <span class="num" style="opacity:.6;">${count(s)}</span></button>`).join("")}
+      </div>
+      ${list.length ? `<div class="orc-list">${list.map(orcCard).join("")}</div>` : `<div class="empty-big">${all.length ? 'Nenhum orçamento com esse filtro.' : 'Nenhum orçamento ainda. Toque no + para fazer o primeiro.'}</div>`}
+    </div>
+    <button class="fab" data-act="novo" aria-label="Novo orçamento">${ico('plus')}</button>`;
+}
+ACT.filtro = s => { FILTRO_STATUS = s; renderLista(); };
+ON_INPUT.buscaOrc = el => { BUSCA_ORC = el.value; const pos = el.selectionStart; renderLista(); const n = $('orc-busca'); n.focus(); n.setSelectionRange(pos, pos); };
+function orcCard(o){
+  const t = orcTotal(o);
+  const preview = (o.servicos || []).slice(0, 2).map(s => `${fmtNum(s.quantidade)}× ${s.titulo}`).join(", ") || "Sem serviços ainda";
+  const lst = lembreteEstado(o.lembrete);
+  const warns = [];
+  if(foraDaGarantia(o)) warns.push(`Fora da garantia de ${o.garantiaDias || 90} dias`);
+  if(lst === 'late') warns.push('Lembrete atrasado');
+  return `<button class="orc-card" data-act="abrir" data-arg="${o.id}">
+    <span class="n num">Nº ${esc(o.numero)} · ${fmtDate(o.criadoEm)}</span>
+    <span class="pill st-${o.status}">${STATUS_LABEL[o.status] || o.status}</span>
+    <span class="c">${esc(o.clienteNome || "Sem cliente")}</span>
+    <span class="v num">${fmtMoney(t.total)}</span>
+    <span class="p">${esc(preview)}</span>
+    ${warns.length ? `<span class="warn">${warns.join(' · ')}</span>` : ''}
+  </button>`;
+}
+
+/* =====================================================================
+   FORMULÁRIO: NOVO / EDITAR ORÇAMENTO
+   ===================================================================== */
+let FORM = null;
+function blankForm(){
+  return { id:null, clienteId:"", clienteNome:"", clienteTelefone:"", status:"negociacao",
+    descricaoAtividades:STATE.config.observacoesPadrao || "", servicos:[], materiais:[], recibos:[], lembrete:null,
+    garantiaDias:STATE.config.garantiaDiasPadrao || 90, validadeDias:STATE.config.validadeDias || 7 };
+}
+function renderForm(id){
+  FORM = id && STATE.orcamentos[id] ? clone(STATE.orcamentos[id]) : blankForm();
+  if(!FORM.servicos) FORM.servicos = []; if(!FORM.materiais) FORM.materiais = [];
+  const app = $('app'); app.className = 'wide has-bar';
+  app.innerHTML = `
+    ${topbar(id ? "Editar orçamento" : "Novo orçamento", id ? 'Nº ' + esc(FORM.numero) : 'Nº ' + gerarNumeroOrcamento() + ' (automático)', id ? 'detalhe:' + id : 'lista')}
+    <div class="cols">
+      <div class="main">
+        <div class="content">
+          <div class="card">
+            <div class="card-head"><h2>Cliente</h2></div>
+            <div class="field"><label for="f-cliente-nome">Nome</label>
+              <input type="text" id="f-cliente-nome" value="${esc(FORM.clienteNome || "")}" placeholder="Digite para buscar ou criar" autocomplete="off" data-in="formCliente">
+              <div id="f-cliente-lista"></div></div>
+            <div id="f-cliente-info"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>Serviços</h2></div>
+            <div id="f-servicos-list"></div>
+            <div class="btn-group" style="margin-top:10px;">
+              <button class="btn btn-dashed" data-act="servAbrir">${ico('plus')} Serviço</button>
+              <button class="btn btn-dashed" data-act="servAbrir" data-arg="hora">${ico('clock')} Por hora</button>
+              <button class="btn btn-dashed" data-act="servAbrir" data-arg="diaria">${ico('calendar')} Por diária</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>Materiais</h2><span class="sub">opcional</span></div>
+            <div id="f-materiais-list"></div>
+            <button class="btn btn-dashed btn-block" style="margin-top:10px;" data-act="matAbrir">${ico('plus')} Material</button>
+          </div>
+
+          <div class="card">
+            <div class="field"><label for="f-descricao">Observações e descrição das atividades</label>
+              <textarea id="f-descricao" placeholder="Condições de pagamento, prazos, o que está incluso…" data-in="formPrev">${esc(FORM.descricaoAtividades || "")}</textarea>
+              <p class="hint">Aparece no documento do cliente.</p></div>
+            <div class="row">
+              <div class="field"><label for="f-validade">Validade (dias)</label><input type="text" inputmode="numeric" id="f-validade" value="${FORM.validadeDias || STATE.config.validadeDias || 7}" data-in="formPrev"></div>
+              <div class="field"><label for="f-garantia">Garantia (dias)</label><input type="text" inputmode="numeric" id="f-garantia" value="${FORM.garantiaDias || 90}" data-in="formPrev"></div>
+            </div>
+            <div class="field"><label for="f-status">Etapa</label>
+              <select id="f-status">${STATUS_ORDER.map(s => `<option value="${s}" ${FORM.status === s ? "selected" : ""}>${STATUS_LABEL[s]}</option>`).join("")}</select></div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <div class="tl"><span class="l">Total do orçamento</span><span class="big num" id="f-total">R$ 0,00</span></div>
+          <div class="btns">
+            <button class="btn btn-on-bar only-mobile" data-act="verPrevia">${ico('eye')} Prévia</button>
+            <button class="btn btn-primary" data-act="formSalvar">Salvar orçamento</button>
+          </div>
+        </div>
+      </div>
+      <aside class="side" aria-label="Prévia do documento">
+        <div class="preview-label"><span class="eyebrow">É assim que o cliente vê</span></div>
+        <div class="doc-frame" id="side-frame"></div>
+      </aside>
+    </div>`;
+  renderFormCliente(); renderFormServicos(); renderFormMateriais();
+}
+function formDoc(){
+  // um "orçamento" montado com o que está no formulário, para a prévia
+  const desc = $('f-descricao'), val = $('f-validade'), gar = $('f-garantia');
+  return Object.assign({}, FORM, {
+    numero:FORM.numero || gerarNumeroOrcamento(), criadoEm:FORM.criadoEm || nowISO(),
+    descricaoAtividades:desc ? desc.value : FORM.descricaoAtividades,
+    validadeDias:val ? (parseInt(val.value, 10) || 0) : FORM.validadeDias,
+    garantiaDias:gar ? (parseInt(gar.value, 10) || 0) : FORM.garantiaDias,
+  });
+}
+ON_INPUT.formPrev = () => agendarPreview();
+let PREV_T = null;
+function agendarPreview(){ clearTimeout(PREV_T); PREV_T = setTimeout(atualizarPreview, 120); }
+function atualizarPreview(){
+  if(VIEW.name === 'form' && FORM){
+    const o = formDoc();
+    if($('f-total')) $('f-total').textContent = fmtMoney(orcTotal(o).total);
+    if($('side-frame')) montarFolha($('side-frame'), o, 'orcamento');
+  } else if(VIEW.name === 'detalhe'){
+    const o = STATE.orcamentos[VIEW.param];
+    if(o && $('side-frame')) montarFolha($('side-frame'), o, 'orcamento');
+  }
+}
+ON_INPUT.formCliente = el => {
+  FORM.clienteId = ""; FORM.clienteNome = el.value; FORM.clienteTelefone = $('f-cliente-tel') ? $('f-cliente-tel').value : '';
+  const q = el.value.trim().toLowerCase(), lista = $('f-cliente-lista');
+  const matches = q.length >= 2 ? Object.values(STATE.clientes).filter(c => (c.nome || '').toLowerCase().includes(q)).slice(0, 6) : [];
+  lista.innerHTML = matches.length ? `<div class="autolist">${matches.map(c =>
+    `<button type="button" class="autoitem" data-act="acClientePick" data-arg="${c.id}" data-target="f-cliente-nome"><b>${esc(c.nome)}</b><span>${esc(c.telefone || 'sem telefone')}</span></button>`).join('')}</div>` : "";
+  renderFormCliente(true);
+  agendarPreview();
+};
+function formSelecionarCliente(id){
+  const c = STATE.clientes[id];
+  FORM.clienteId = id; FORM.clienteNome = c.nome; FORM.clienteTelefone = c.telefone || "";
+  $('f-cliente-nome').value = c.nome; $('f-cliente-lista').innerHTML = "";
+  renderFormCliente(); agendarPreview();
+}
+// cliente escolhido: mostra o telefone. Cliente novo: pede o telefone (para o WhatsApp funcionar depois)
+function renderFormCliente(keepTel){
+  const box = $('f-cliente-info'); if(!box) return;
+  if(FORM.clienteId && STATE.clientes[FORM.clienteId]){
+    const c = STATE.clientes[FORM.clienteId];
+    box.innerHTML = `<p class="hint">Cliente cadastrado${c.telefone ? ' · ' + esc(c.telefone) : ''}${c.endereco ? ' · ' + esc(c.endereco) : ''}</p>`;
+  } else if(FORM.clienteNome.trim()){
+    if(keepTel && $('f-cliente-tel')) return;
+    box.innerHTML = `<div class="field"><label for="f-cliente-tel">Telefone (cliente novo, opcional)</label>
+      <input type="tel" id="f-cliente-tel" value="${esc(FORM.clienteTelefone || '')}" placeholder="(48) 99999-9999" data-in="formTel"></div>
+      <p class="hint">O cliente entra no cadastro quando você salvar.</p>`;
+  } else box.innerHTML = '';
+}
+ON_INPUT.formTel = el => { el.value = maskPhone(el.value); FORM.clienteTelefone = el.value; agendarPreview(); };
+function renderFormServicos(){
+  const el = $('f-servicos-list');
+  el.innerHTML = FORM.servicos.length ? `<div class="items">${FORM.servicos.map((s, idx) => `
+    <div class="item-row">
+      <div><div class="item-main">${fmtNum(s.quantidade)}× ${esc(s.titulo)}</div>
+        ${s.porHora ? `<div class="item-sub">${horaResumo(s)}</div>` : ''}${s.porDiaria ? `<div class="item-sub">${diariaResumo(s)}</div>` : ''}
+        ${s.descricao ? `<div class="item-sub">${esc(s.descricao.length > 90 ? s.descricao.slice(0, 90) + '…' : s.descricao)}</div>` : ''}</div>
+      <div><div class="item-val">${fmtMoney(s.valorTotal)}</div>
+        <div class="item-links"><button class="link" data-act="servAbrir" data-arg="${idx}">editar</button><button class="link danger" data-act="servRemover" data-arg="${idx}">remover</button></div></div>
+    </div>`).join("")}</div>` : `<p class="empty">Nenhum serviço adicionado ainda.</p>`;
+  atualizarPreview();
+}
+function diariaResumo(s){
+  const d = s.diariaDetalhe || {}, n = Number(d.dias) || 0;
+  return `${n} ${n === 1 ? 'diária' : 'diárias'} × ${fmtMoney(d.valorDiaria)}`;
+}
+function diasDeDiaria(o){ return (o.servicos || []).filter(s => s.porDiaria).reduce((t, s) => t + (Number(s.diariaDetalhe && s.diariaDetalhe.dias) || 0), 0); }
+function horaResumo(s){
+  const h = s.horaDetalhe || {};
+  if(h.modo === 'estimado') return `${fmtNum(h.horas)}h estimadas × ${fmtMoney(h.precoHora)}/h`;
+  return `${esc(h.inicio || '')}–${esc(h.fim || '')}${h.pausaMin ? `, pausa ${fmtNum(h.pausaMin)} min` : ''} = ${esc(h.label || '')} × ${fmtMoney(h.precoHora)}/h`;
+}
+function renderFormMateriais(){
+  const el = $('f-materiais-list');
+  el.innerHTML = FORM.materiais.length ? `<div class="items">${FORM.materiais.map((m, idx) => `
+    <div class="item-row">
+      <div><div class="item-main">${fmtNum(m.quantidade)} ${esc(m.unidade || "")} · ${esc(m.titulo)}</div>
+        <div class="item-sub">${fmtMoney(m.valorUnit)} cada${m.margemTipo ? ` + margem ${m.margemTipo === 'pct' ? fmtNum(m.margemValor) + '%' : fmtMoney(m.margemValor)} = ${fmtMoney(matUnitFinal(m))}` : ''}</div></div>
+      <div><div class="item-val">${fmtMoney(m.valorTotal)}</div>
+        <div class="item-links"><button class="link" data-act="matAbrir" data-arg="${idx}">editar</button><button class="link danger" data-act="matRemover" data-arg="${idx}">remover</button></div></div>
+    </div>`).join("")}</div>` : `<p class="empty">Nenhum material adicionado ainda.</p>`;
+  atualizarPreview();
+}
+ACT.servRemover = idx => { FORM.servicos.splice(Number(idx), 1); closeModal(true); renderFormServicos(); };
+ACT.matRemover = idx => { FORM.materiais.splice(Number(idx), 1); closeModal(true); renderFormMateriais(); };
+ACT.verPrevia = () => abrirPrevia(formDoc(), 'orcamento');
+
+// ---------- janela de serviço ----------
+let SERV_EDIT = null, SERV_HMODO = 'horario';
+ACT.servAbrir = arg => {
+  const editando = arg !== undefined && arg !== '' && arg !== 'hora' && arg !== 'diaria';
+  SERV_EDIT = editando ? Number(arg) : null;
+  const s = editando ? FORM.servicos[SERV_EDIT] : null;
+  const porHora = editando ? !!s.porHora : arg === 'hora';
+  const porDiaria = editando ? !!s.porDiaria : arg === 'diaria';
+  const hd = (s && s.horaDetalhe) || {}, dd = (s && s.diariaDetalhe) || {};
+  SERV_HMODO = hd.modo || 'horario';
+  const hi = splitHHMM(hd.inicio), hf = splitHHMM(hd.fim);
+  openModal(`${sheetHead(editando ? "Editar serviço" : (porHora ? "Mão de obra por hora" : porDiaria ? "Mão de obra por diária" : "Adicionar serviço"))}
+    <div class="field"><label for="s-titulo">Nome do serviço</label>
+      <input type="text" id="s-titulo" placeholder="Ex: Instalação de tomada" autocomplete="off" data-in="acServico" value="${esc(s ? s.titulo : (porHora ? 'Mão de obra' : porDiaria ? 'Mão de obra (diária)' : ''))}">
+      <div id="s-sugestoes"></div></div>
+    <div class="field"><label for="s-desc">Descrição (opcional, aparece no documento)</label>
+      <textarea id="s-desc" placeholder="O que será feito, com detalhes" style="min-height:60px;">${esc(s ? s.descricao || '' : '')}</textarea></div>
+    <div class="toggle-row"><span id="s-porhora-l">Cobrar por hora trabalhada</span>
+      <span class="switch"><input type="checkbox" id="s-porhora" aria-labelledby="s-porhora-l" ${porHora ? "checked" : ""} data-ch="servPorHora"><span class="slider"></span></span></div>
+    <div class="toggle-row"><span id="s-pordiaria-l">Cobrar por diária</span>
+      <span class="switch"><input type="checkbox" id="s-pordiaria" aria-labelledby="s-pordiaria-l" ${porDiaria ? "checked" : ""} data-ch="servPorDiaria"><span class="slider"></span></span></div>
+    <div id="s-campos-diaria" ${porDiaria ? '' : 'hidden'}>
+      <div class="row"><div class="field"><label for="s-dias">Dias</label><input type="text" inputmode="numeric" id="s-dias" placeholder="Ex: 3" value="${dd.dias || ''}" data-in="servDias"></div>
+      <div class="field"><label for="s-valor-diaria">Valor da diária</label><div class="money-in"><input type="text" inputmode="decimal" id="s-valor-diaria" placeholder="0,00" value="${numIn(dd.valorDiaria)}" data-in="servCalc"></div></div></div>
+    </div>
+    <div id="s-campos-normais" ${porHora || porDiaria ? 'hidden' : ''}>
+      <div class="field"><label for="s-valor">Valor do serviço</label><div class="money-in"><input type="text" inputmode="decimal" id="s-valor" placeholder="0,00" value="${(s && !s.porHora) ? numIn(s.valorUnit) : ''}" data-in="servCalc"></div></div>
+    </div>
+    <div id="s-campos-hora" ${porHora ? '' : 'hidden'}>
+      <div class="seg" role="group" aria-label="Como contar as horas">
+        <button type="button" data-act="servHModo" data-arg="horario" class="${SERV_HMODO === 'horario' ? 'on' : ''}">Início e fim</button>
+        <button type="button" data-act="servHModo" data-arg="estimado" class="${SERV_HMODO === 'estimado' ? 'on' : ''}">Horas estimadas</button>
+      </div>
+      <div id="s-hmodo-horario" ${SERV_HMODO === 'horario' ? '' : 'hidden'}>
+        <div class="row"><div class="field"><label for="s-inicio-h">Início</label>${timeFieldsHtml('s-inicio', hi.h, hi.m)}</div><div class="field"><label for="s-fim-h">Fim</label>${timeFieldsHtml('s-fim', hf.h, hf.m)}</div></div>
+        <div class="field"><label for="s-pausa">Pausa (minutos)</label><input type="text" inputmode="numeric" id="s-pausa" placeholder="0" value="${numIn(hd.pausaMin)}" data-in="servCalc"></div>
+      </div>
+      <div id="s-hmodo-estimado" ${SERV_HMODO === 'estimado' ? '' : 'hidden'}>
+        <div class="field"><label for="s-horas">Horas estimadas</label><input type="text" inputmode="decimal" id="s-horas" placeholder="Ex: 3,5" value="${hd.modo === 'estimado' ? numIn(hd.horas) : ''}" data-in="servCalc"></div>
+      </div>
+      <div class="field"><label for="s-preco-hora">Preço por hora</label><div class="money-in"><input type="text" inputmode="decimal" id="s-preco-hora" placeholder="0,00" value="${numIn(hd.precoHora)}" data-in="servCalc"></div></div>
+    </div>
+    <div class="field" id="s-qtd-campo" ${porDiaria ? 'hidden' : ''}><label for="s-qtd">Quantidade</label><input type="text" inputmode="decimal" id="s-qtd" placeholder="1" value="${s ? numIn(s.quantidade) : ''}" data-in="servCalc"></div>
+    <div class="card" style="background:var(--well);border:none;margin-top:14px;padding:12px 14px;">
+      <div class="sum-line" id="s-hora-linha" ${porHora ? '' : 'hidden'}><span>Tempo</span><span class="num" id="s-tempo">00:00</span></div>
+      <div class="sum-line" style="font-weight:700;"><span>Total do item</span><span class="num" id="s-total">R$ 0,00</span></div>
+    </div>
+    ${!editando ? `<div class="toggle-row"><span id="s-cat-l">Salvar no catálogo</span><span class="switch"><input type="checkbox" id="s-salvar-lista" aria-labelledby="s-cat-l"><span class="slider"></span></span></div>` : ""}
+    <div class="sheet-actions">
+      ${editando ? `<button class="btn btn-danger" data-act="servRemover" data-arg="${SERV_EDIT}" aria-label="Excluir serviço">${ico('trash')}</button>` : ""}
+      <button class="btn" data-act="close">Cancelar</button>
+      <button class="btn btn-primary" data-act="servConfirmar">${editando ? "Salvar" : "Adicionar"}</button>
+    </div>`);
+  servicoRecalc();
+};
+ON_CHANGE.servPorHora = el => {
+  if(el.checked && $('s-pordiaria').checked){ $('s-pordiaria').checked = false; $('s-campos-diaria').hidden = true; $('s-qtd-campo').hidden = false; }
+  $('s-campos-normais').hidden = el.checked; $('s-campos-hora').hidden = !el.checked; $('s-hora-linha').hidden = !el.checked;
+  servicoRecalc();
+};
+// diária: dias × valor da diária (quantidade fica 1)
+ON_CHANGE.servPorDiaria = el => {
+  if(el.checked && $('s-porhora').checked){ $('s-porhora').checked = false; $('s-campos-hora').hidden = true; $('s-hora-linha').hidden = true; }
+  $('s-campos-diaria').hidden = !el.checked; $('s-qtd-campo').hidden = el.checked;
+  $('s-campos-normais').hidden = el.checked || $('s-porhora').checked;
+  servicoRecalc();
+};
+// só dias inteiros: "1,5" vira "1" (antes virava "15")
+ON_INPUT.servDias = el => { el.value = el.value.split(/[.,]/)[0].replace(/\D/g, '').slice(0, 3); servicoRecalc(); };
+ACT.servHModo = m => {
+  SERV_HMODO = m;
+  document.querySelectorAll('.seg [data-act="servHModo"]').forEach(b => b.classList.toggle('on', b.dataset.arg === m));
+  $('s-hmodo-horario').hidden = m !== 'horario'; $('s-hmodo-estimado').hidden = m !== 'estimado';
+  servicoRecalc();
+};
+ON_INPUT.servCalc = () => servicoRecalc();
+// lê a janela e devolve o item calculado (ou null se faltar algo)
+function servicoLer(){
+  if(!$('s-titulo')) return null;
+  const qtd = parseNum($('s-qtd').value) || 1;
+  if($('s-pordiaria').checked){
+    const dias = parseInt($('s-dias').value, 10) || 0, valorDiaria = cents(parseNum($('s-valor-diaria').value));
+    const total = cents(dias * valorDiaria);
+    return {porDiaria:true, diariaDetalhe:{dias, valorDiaria}, quantidade:1, valorUnit:total, valorTotal:total, ok: dias >= 1 && valorDiaria > 0};
+  }
+  if($('s-porhora').checked){
+    const preco = parseNum($('s-preco-hora').value);
+    let det, horas;
+    if(SERV_HMODO === 'estimado'){
+      horas = parseNum($('s-horas').value);
+      det = {modo:'estimado', horas, precoHora:preco, label:horasLabel(horas)};
+    } else {
+      const inicio = getTimeField('s-inicio'), fim = getTimeField('s-fim'), pausa = parseNum($('s-pausa').value);
+      const r = calcHoras(inicio, fim, pausa); horas = r.horasDecimais;
+      det = {modo:'horario', inicio, fim, pausaMin:pausa, precoHora:preco, label:r.label, horas:cents(horas)};
+    }
+    const unit = cents(horas * preco);
+    return {porHora:true, horaDetalhe:det, quantidade:qtd, valorUnit:unit, valorTotal:cents(unit * qtd), ok: horas > 0};
+  }
+  const v = cents(parseNum($('s-valor').value));
+  return {porHora:false, quantidade:qtd, valorUnit:v, valorTotal:cents(v * qtd), ok:true};
+}
+function servicoRecalc(){
+  const r = servicoLer(); if(!r) return;
+  $('s-total').textContent = fmtMoney(r.valorTotal);
+  if(r.porHora) $('s-tempo').textContent = r.horaDetalhe.label;
+}
+ON_INPUT.acServico = el => {
+  const q = el.value.trim().toLowerCase(), box = $('s-sugestoes');
+  if(q.length < 2){ box.innerHTML = ""; return; }
+  const matches = Object.values(STATE.catServicos).filter(s => (s.titulo || '').toLowerCase().includes(q)).slice(0, 6);
+  box.innerHTML = matches.length ? `<div class="autolist">${matches.map(s =>
+    `<button type="button" class="autoitem" data-act="servPick" data-arg="${s.id}"><b>${esc(s.titulo)}</b><span>${fmtMoney(s.valor)} · do catálogo</span></button>`).join('')}</div>` : "";
+};
+ACT.servPick = id => {
+  const s = STATE.catServicos[id]; if(!s) return;
+  $('s-titulo').value = s.titulo;
+  if(s.descricao && !$('s-desc').value.trim()) $('s-desc').value = s.descricao;
+  if($('s-porhora').checked){ $('s-porhora').checked = false; ON_CHANGE.servPorHora($('s-porhora')); }
+  if($('s-pordiaria').checked){ $('s-pordiaria').checked = false; ON_CHANGE.servPorDiaria($('s-pordiaria')); }
+  $('s-valor').value = numIn(s.valor);
+  $('s-sugestoes').innerHTML = "";
+  servicoRecalc();
+};
+ACT.servConfirmar = async () => {
+  const titulo = $('s-titulo').value.trim();
+  if(!titulo){ toast("Dê um nome ao serviço."); return; }
+  const r = servicoLer();
+  if(r.porHora && !r.ok){ toast(SERV_HMODO === 'estimado' ? "Informe as horas estimadas." : "Preencha o início e o fim."); return; }
+  if(r.porDiaria && !r.ok){ toast("Informe os dias e o valor da diária."); return; }
+  const item = Object.assign({id:uid(), titulo, descricao:$('s-desc').value.trim()}, r); delete item.ok;
+  if(!item.porHora) delete item.horaDetalhe;
+  if(!item.porDiaria) delete item.diariaDetalhe;
+  if(SERV_EDIT !== null){ item.id = FORM.servicos[SERV_EDIT].id || item.id; FORM.servicos[SERV_EDIT] = item; }
+  else FORM.servicos.push(item);
+  const salvar = $('s-salvar-lista') && $('s-salvar-lista').checked && !item.porHora && !item.porDiaria;
+  closeModal(true); renderFormServicos();
+  if(salvar){ try { await salvarNoCatalogo('s', {titulo, valor:item.valorUnit, descricao:item.descricao}); toast(`"${titulo}" salvo no catálogo.`); } catch(e){ toast('O serviço entrou no orçamento, mas não foi salvo no catálogo.'); } }
+};
+
+// ---------- janela de material ----------
+let MAT_EDIT = null;
+ACT.matAbrir = arg => {
+  const editando = arg !== undefined && arg !== '';
+  MAT_EDIT = editando ? Number(arg) : null;
+  const m = editando ? FORM.materiais[MAT_EDIT] : null;
+  openModal(`${sheetHead(editando ? "Editar material" : "Adicionar material")}
+    <div class="field"><label for="m-titulo">Material</label>
+      <input type="text" id="m-titulo" placeholder="Ex: Disjuntor DIN 20A" autocomplete="off" data-in="acMaterial" value="${esc(m ? m.titulo : '')}">
+      <div id="m-sugestoes"></div></div>
+    <div class="row">
+      <div class="field"><label for="m-qtd">Quantidade</label><input type="text" inputmode="decimal" id="m-qtd" placeholder="1" value="${m ? numIn(m.quantidade) : ''}" data-in="matCalc"></div>
+      <div class="field"><label for="m-unidade">Unidade</label><input type="text" id="m-unidade" placeholder="und, m, kg" list="unidades" value="${esc(m ? m.unidade || '' : 'und')}"></div>
+    </div>
+    <div class="field"><label for="m-valor">Valor de cada um</label><div class="money-in"><input type="text" inputmode="decimal" id="m-valor" placeholder="0,00" value="${m ? numIn(m.valorUnit) : ''}" data-in="matCalc"></div></div>
+    <div class="toggle-row"><span id="m-margem-l">Aplicar margem de lucro</span>
+      <span class="switch"><input type="checkbox" id="m-margem-on" aria-labelledby="m-margem-l" ${m && m.margemTipo ? "checked" : ""} data-ch="matMargem"><span class="slider"></span></span></div>
+    <div id="m-margem-campos" class="row" style="margin-top:10px;" ${m && m.margemTipo ? '' : 'hidden'}>
+      <div><select id="m-margem-tipo" data-ch="matMargemTipo" aria-label="Tipo de margem"><option value="pct" ${m && m.margemTipo === 'fixo' ? '' : 'selected'}>Porcentagem (%)</option><option value="fixo" ${m && m.margemTipo === 'fixo' ? 'selected' : ''}>Valor fixo (R$)</option></select></div>
+      <div><input type="text" inputmode="decimal" id="m-margem-valor" placeholder="0" value="${m ? numIn(m.margemValor) : ''}" data-in="matCalc" aria-label="Valor da margem"></div>
+    </div>
+    <p class="hint">A margem não aparece para o cliente: no documento sai só o valor final.</p>
+    <div class="card" style="background:var(--well);border:none;margin-top:12px;padding:12px 14px;">
+      <div class="sum-line"><span>Valor final de cada um</span><span class="num" id="m-unit">R$ 0,00</span></div>
+      <div class="sum-line" style="font-weight:700;"><span>Total do item</span><span class="num" id="m-total">R$ 0,00</span></div>
+    </div>
+    ${!editando ? `<div class="toggle-row"><span id="m-cat-l">Salvar no catálogo</span><span class="switch"><input type="checkbox" id="m-salvar-lista" aria-labelledby="m-cat-l"><span class="slider"></span></span></div>` : ""}
+    <div class="sheet-actions">
+      ${editando ? `<button class="btn btn-danger" data-act="matRemover" data-arg="${MAT_EDIT}" aria-label="Excluir material">${ico('trash')}</button>` : ""}
+      <button class="btn" data-act="close">Cancelar</button>
+      <button class="btn btn-primary" data-act="matConfirmar">${editando ? "Salvar" : "Adicionar"}</button>
+    </div>`);
+  materialRecalc();
+};
+ON_CHANGE.matMargem = el => { $('m-margem-campos').hidden = !el.checked; materialRecalc(); };
+ON_CHANGE.matMargemTipo = () => materialRecalc();
+ON_INPUT.matCalc = () => materialRecalc();
+function materialLer(){
+  const m = { quantidade: parseNum($('m-qtd').value) || 1, valorUnit: cents(parseNum($('m-valor').value)),
+    margemTipo: $('m-margem-on').checked ? $('m-margem-tipo').value : null,
+    margemValor: $('m-margem-on').checked ? parseNum($('m-margem-valor').value) : 0 };
+  m.valorTotal = cents(matUnitFinal(m) * m.quantidade);
+  return m;
+}
+function materialRecalc(){ const m = materialLer(); $('m-unit').textContent = fmtMoney(matUnitFinal(m)); $('m-total').textContent = fmtMoney(m.valorTotal); }
+ON_INPUT.acMaterial = el => {
+  const q = el.value.trim().toLowerCase(), box = $('m-sugestoes');
+  if(q.length < 2){ box.innerHTML = ""; return; }
+  const matches = Object.values(STATE.catMateriais).filter(m => (m.titulo || '').toLowerCase().includes(q)).slice(0, 6);
+  box.innerHTML = matches.length ? `<div class="autolist">${matches.map(m =>
+    `<button type="button" class="autoitem" data-act="matPick" data-arg="${m.id}"><b>${esc(m.titulo)}</b><span>${fmtMoney(m.valor)} / ${esc(m.unidade || 'und')} · do catálogo</span></button>`).join('')}</div>` : "";
+};
+ACT.matPick = id => {
+  const m = STATE.catMateriais[id]; if(!m) return;
+  $('m-titulo').value = m.titulo; $('m-unidade').value = m.unidade || 'und'; $('m-valor').value = numIn(m.valor);
+  $('m-sugestoes').innerHTML = ""; materialRecalc();
+};
+ACT.matConfirmar = async () => {
+  const titulo = $('m-titulo').value.trim();
+  if(!titulo){ toast("Dê um nome ao material."); return; }
+  const unidade = $('m-unidade').value.trim() || 'und';
+  const item = Object.assign({id:uid(), titulo, unidade}, materialLer());
+  if(MAT_EDIT !== null){ item.id = FORM.materiais[MAT_EDIT].id || item.id; FORM.materiais[MAT_EDIT] = item; }
+  else FORM.materiais.push(item);
+  const salvar = $('m-salvar-lista') && $('m-salvar-lista').checked;
+  closeModal(true); renderFormMateriais();
+  if(salvar){ try { await salvarNoCatalogo('m', {titulo, unidade, valor:item.valorUnit}); toast(`"${titulo}" salvo no catálogo.`); } catch(e){ toast('O material entrou no orçamento, mas não foi salvo no catálogo.'); } }
+};
+
+ACT.formSalvar = async (arg, btn) => {
+  FORM.clienteNome = $('f-cliente-nome').value.trim();
+  if(!FORM.clienteNome){ toast("Informe o cliente."); $('f-cliente-nome').focus(); return; }
+  btn.disabled = true; btn.textContent = 'Salvando…';
+  try {
+    let clienteId = FORM.clienteId;
+    if(!clienteId || !STATE.clientes[clienteId]){
+      const existente = Object.values(STATE.clientes).find(c => (c.nome || '').toLowerCase() === FORM.clienteNome.toLowerCase());
+      if(existente) clienteId = existente.id;
+      else clienteId = (await salvando(() => db.collection("clientes").add({nome:FORM.clienteNome, telefone:FORM.clienteTelefone || "", email:"", endereco:"", cpfCnpj:""}))).id;
+    }
+    const cli = STATE.clientes[clienteId] || {nome:FORM.clienteNome, telefone:FORM.clienteTelefone};
+    const status = $('f-status').value;
+    const d = formDoc();
+    const data = {
+      numero:FORM.numero || gerarNumeroOrcamento(), criadoEm:FORM.criadoEm || nowISO(),
+      clienteId, clienteNome:FORM.clienteNome, clienteTelefone:cli.telefone || FORM.clienteTelefone || "",
+      status, descricaoAtividades:d.descricaoAtividades,
+      servicos:FORM.servicos, materiais:FORM.materiais,
+      recibos:FORM.recibos || [], lembrete:FORM.lembrete || null, agenda:FORM.agenda || null,
+      garantiaDias:d.garantiaDias || STATE.config.garantiaDiasPadrao || 90, validadeDias:d.validadeDias || STATE.config.validadeDias || 7,
+      finalizadoEm: status === 'finalizado' ? (FORM.finalizadoEm || nowISO()) : (FORM.finalizadoEm || null),
+    };
+    let targetId = FORM.id;
+    if(targetId) await salvando(() => db.collection("orcamentos").doc(targetId).set(data));
+    else targetId = (await salvando(() => db.collection("orcamentos").add(data))).id;
+    toast(`Orçamento nº ${data.numero} salvo.`);
+    go('detalhe', targetId);
+    if(status === 'aprovado' && FORM.status !== 'aprovado') perguntarAgenda(targetId);
+    if(status === 'finalizado' && FORM.status !== 'finalizado') oferecerCobranca(targetId);
+  } catch(e){ btn.disabled = false; btn.textContent = 'Salvar orçamento'; }
+};
+
+/* =====================================================================
+   DETALHE DO ORÇAMENTO
+   ===================================================================== */
+function renderDetalhe(id){
+  const o = STATE.orcamentos[id];
+  const app = $('app');
+  if(!o){ app.innerHTML = topbar("Orçamento", "não encontrado (talvez tenha sido excluído)", "lista"); return; }
+  app.className = 'wide';
+  const t = orcTotal(o);
+  const cli = clienteDe(o);
+  const tel = cli.telefone || o.clienteTelefone || '';
+  const wa = waNumber(tel);
+  const pct = t.total > 0 ? Math.min(100, Math.round(t.recebido / t.total * 100)) : 0;
+  app.innerHTML = `
+    ${topbar("Nº " + esc(o.numero), `<span class="pill st-${o.status}">${STATUS_LABEL[o.status] || o.status}</span>`, "lista")}
+    <div class="cols">
+      <div class="main"><div class="content">
+        <div class="card">
+          <div class="card-head" style="margin-bottom:2px;">
+            <h2 style="font-size:19px;">${esc(o.clienteNome)}</h2>
+            <button class="btn btn-sm" data-act="go" data-arg="form:${o.id}">${ico('edit')} Editar</button>
+          </div>
+          <div class="sub">${tel ? esc(tel) : 'Sem telefone cadastrado'} · criado em ${fmtDate(o.criadoEm)}</div>
+          ${tel ? `<div class="contact-row">
+            ${wa ? `<a class="btn btn-wa" href="https://wa.me/${wa}" target="_blank" rel="noopener">${ico('msg')} WhatsApp</a>` : ''}
+            <a class="btn" href="tel:${onlyDigits(tel)}">${ico('phone')} Ligar</a>
+            <button class="btn" data-act="copiarTel" data-arg="${esc(tel)}" aria-label="Copiar telefone">${ico('copy')}</button>
+          </div>` : ''}
+          <div class="field" style="margin-top:14px;"><label for="d-status">Etapa</label>
+            <select id="d-status" data-ch="mudarStatus" data-id="${o.id}">${STATUS_ORDER.map(s => `<option value="${s}" ${o.status === s ? "selected" : ""}>${STATUS_LABEL[s]}</option>`).join("")}</select></div>
+          ${foraDaGarantia(o) ? `<div class="warn-box">Este serviço não está mais dentro da garantia de ${o.garantiaDias || 90} dias.</div>` : ''}
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>Serviços</h2><span class="num sub">${fmtMoney(t.totalServicos)}</span></div>
+          ${(o.servicos || []).length ? `<div class="items">${o.servicos.map(s => `<div class="item-row"><div><div class="item-main">${fmtNum(s.quantidade)}× ${esc(s.titulo)}</div>${s.porHora ? `<div class="item-sub">${horaResumo(s)}</div>` : ''}${s.porDiaria ? `<div class="item-sub">${diariaResumo(s)}</div>` : ''}${s.descricao ? `<div class="item-sub">${esc(s.descricao)}</div>` : ''}</div><div class="item-val">${fmtMoney(s.valorTotal)}</div></div>`).join("")}</div>` : '<p class="empty">Nenhum serviço.</p>'}
+        </div>
+
+        ${(o.materiais || []).length ? `<div class="card">
+          <div class="card-head"><h2>Materiais</h2><span class="num sub">${fmtMoney(t.totalMateriais)}</span></div>
+          <div class="items">${o.materiais.map(m => `<div class="item-row"><div><div class="item-main">${fmtNum(m.quantidade)} ${esc(m.unidade || "")} · ${esc(m.titulo)}</div>${m.margemTipo ? `<div class="item-sub">Custo ${fmtMoney(m.valorUnit)} + margem ${m.margemTipo === 'pct' ? fmtNum(m.margemValor) + '%' : fmtMoney(m.margemValor)}</div>` : ''}</div><div class="item-val">${fmtMoney(m.valorTotal)}</div></div>`).join("")}</div>
+        </div>` : ''}
+
+        ${o.descricaoAtividades ? `<div class="card"><div class="card-head"><h2>Observações</h2></div><div style="white-space:pre-wrap;">${esc(o.descricaoAtividades)}</div></div>` : ''}
+
+        <div class="card">
+          <div class="sum-line total" style="border-top:none;margin-top:0;padding-top:0;"><span>Total do orçamento</span><span class="num">${fmtMoney(t.total)}</span></div>
+          <div class="progress" aria-hidden="true"><span style="width:${pct}%;"></span></div>
+          <div class="sum-line"><span>Recebido</span><span class="num">${fmtMoney(t.recebido)}</span></div>
+          <div class="sum-line"><span>A receber</span><span class="num">${fmtMoney(t.aReceber)}</span></div>
+          <div class="btn-group" style="margin-top:14px;">
+            <button class="btn" data-act="pdf" data-arg="${o.id}:orcamento">${ico('download')} Baixar PDF</button>
+            <button class="btn btn-primary" data-act="reciboAbrir" data-arg="${o.id}">${ico('receipt')} Emitir recibo</button>
+          </div>
+          <button class="btn btn-block only-mobile" style="margin-top:8px;" data-act="previaDetalhe" data-arg="${o.id}">${ico('eye')} Ver documento</button>
+          ${(o.recibos || []).length ? `<div class="eyebrow" style="margin-top:18px;">Recibos emitidos</div>
+            <div class="items">${o.recibos.map((r, idx) => `<div class="item-row"><div><div class="item-main">${esc(r.forma)}</div><div class="item-sub">${fmtDateTime(r.data)}</div></div>
+            <div><div class="item-val">${fmtMoney(r.valor)}</div><div class="item-links"><button class="link" data-act="pdf" data-arg="${o.id}:recibo:${idx}">baixar</button><button class="link danger" data-act="reciboExcluir" data-arg="${o.id}:${idx}">excluir</button></div></div></div>`).join("")}</div>` : ''}
+        </div>
+
+        <div class="card" id="card-agenda">
+          <div class="card-head"><h2>Agenda</h2></div>
+          ${o.agenda && o.agenda.inicio ? `<p class="item-main" style="margin:0 0 10px;">${agendaResumo(o.agenda)}</p>
+            <div class="btn-group"><button class="btn btn-sm" data-act="agendaAbrir" data-arg="${o.id}">Mudar data</button>
+            <button class="btn btn-sm" data-act="go" data-arg="agenda:${o.agenda.inicio}">Ver na agenda</button>
+            <button class="btn btn-sm btn-danger" data-act="agendaRemover" data-arg="${o.id}" style="flex:0 0 auto;">Tirar</button></div>`
+            : `<button class="btn btn-dashed btn-block" data-act="agendaAbrir" data-arg="${o.id}">${ico('calendar')} Marcar na agenda</button>`}
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>Lembrete</h2></div>
+          ${o.lembrete ? lembreteView(o) : `<button class="btn btn-dashed btn-block" data-act="lembreteAbrir" data-arg="${o.id}">${ico('bell')} Adicionar lembrete</button>`}
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" data-act="duplicar" data-arg="${o.id}">${ico('copy')} Duplicar</button>
+          <button class="btn btn-danger" data-act="orcExcluir" data-arg="${o.id}">${ico('trash')} Excluir</button>
+        </div>
+      </div></div>
+      <aside class="side" aria-label="Documento do orçamento">
+        <div class="preview-label"><span class="eyebrow">Documento do cliente</span></div>
+        <div class="doc-frame" id="side-frame"></div>
+      </aside>
+    </div>`;
+  atualizarPreview();
+}
+function lembreteView(o){
+  const l = o.lembrete, paga = l.tipo === 'cobranca' && cobrancaPaga(o.id), st = paga ? 'done' : lembreteEstado(l);
+  const tag = paga ? 'Pago' : ({done:'Concluído', late:'Atrasado', today:'Hoje', sched:'Agendado'}[st] || 'Sem data');
+  return `<div class="reminder ${st === 'today' ? 'sched' : st}">
+      <span class="tag">${tag}</span>
+      <span class="sub">${fmtDateTime(l.data)}</span>
+      <span style="white-space:pre-wrap;">${esc(l.descricao)}</span>
+    </div>
+    <div class="btn-group" style="margin-top:10px;">
+      ${!l.concluido && !paga ? `<button class="btn btn-sm" data-act="lembreteConcluir" data-arg="${o.id}">Marcar como feito</button>` : ""}
+      ${!l.concluido && !paga && (st === 'late' || st === 'today') ? `<button class="btn btn-sm" data-act="lembreteAdiar" data-arg="${o.id}">Adiar para amanhã</button>` : ""}
+      <button class="btn btn-sm" data-act="lembreteAbrir" data-arg="${o.id}">Editar</button>
+      <button class="btn btn-sm btn-danger" data-act="lembreteRemover" data-arg="${o.id}" style="flex:0 0 auto;">Remover</button>
+    </div>`;
+}
+ACT.copiarTel = async (tel) => {
+  try { await navigator.clipboard.writeText(tel); toast('Telefone copiado.'); }
+  catch(e){ toast('Telefone: ' + tel); }
+};
+ACT.previaDetalhe = id => abrirPrevia(STATE.orcamentos[id], 'orcamento');
+ON_CHANGE.mudarStatus = async el => {
+  const data = {status:el.value};
+  if(el.value === 'finalizado') data.finalizadoEm = nowISO();
+  await salvando(() => db.collection("orcamentos").doc(el.dataset.id).update(data));
+  toast('Etapa: ' + STATUS_LABEL[el.value] + '.');
+  if(el.value === 'aprovado') perguntarAgenda(el.dataset.id);
+  if(el.value === 'finalizado') oferecerCobranca(el.dataset.id);
+};
+ACT.orcExcluir = async id => {
+  const o = STATE.orcamentos[id];
+  if(!await confirmar({titulo:`Excluir o orçamento nº ${o.numero}?`, texto:'Ele sai do histórico de vez, com os recibos. Não dá para desfazer.', ok:'Excluir', perigo:true})) return;
+  await salvando(() => db.collection("orcamentos").doc(id).delete());
+  toast('Orçamento excluído.');
+  go('lista');
+};
+ACT.duplicar = async id => {
+  const copia = clone(STATE.orcamentos[id]);
+  delete copia.id;
+  Object.assign(copia, {numero:gerarNumeroOrcamento(), criadoEm:nowISO(), status:"negociacao", recibos:[], lembrete:null, agenda:null, finalizadoEm:null});
+  const ref = await salvando(() => db.collection("orcamentos").add(copia));
+  toast(`Cópia criada: nº ${copia.numero}.`);
+  go('detalhe', ref.id);
+};
+
+// ---------- serviço na agenda (data combinada com o cliente) ----------
+function moverAgenda(a, novoInicio){ return Object.assign({}, a, {inicio:novoInicio, fim:somarDias(novoInicio, diasEntre(a.inicio, a.fim || a.inicio) - 1)}); }
+function agendaResumo(a){
+  const dias = a.fim && a.fim !== a.inicio ? `${fmtDiaCurto(a.inicio)} a ${fmtDiaCurto(a.fim)}` : fmtDiaCurto(a.inicio);
+  return dias + (a.hora ? ' · ' + esc(a.hora) : '') + (a.fim && a.fim !== a.inicio ? ` (${diasEntre(a.inicio, a.fim)} dias)` : '');
+}
+let AGENDA_EDIT = null;
+ACT.agendaAbrir = id => {
+  const o = STATE.orcamentos[id]; if(!o) return;
+  const inicio = (o.agenda && o.agenda.inicio) || diaHoje();
+  AGENDA_EDIT = o.agenda && o.agenda.inicio ? Object.assign({}, o.agenda) : {inicio, fim:somarDias(inicio, Math.max(diasDeDiaria(o), 1) - 1), hora:''};
+  const h = splitHHMM(AGENDA_EDIT.hora);
+  openModal(`${sheetHead('Serviço na agenda')}
+    <div class="row"><div class="field"><label for="a-inicio">Primeiro dia</label><input type="date" id="a-inicio" value="${esc(AGENDA_EDIT.inicio)}" data-ch="agendaInicio"></div>
+    <div class="field"><label for="a-fim">Último dia</label><input type="date" id="a-fim" value="${esc(AGENDA_EDIT.fim)}"></div></div>
+    <div class="field"><label for="a-hora-h">Horário (opcional)</label>${timeFieldsHtml('a-hora', h.h, h.m)}</div>
+    <p class="hint">Se o serviço levar mais de um dia, ele aparece em todos os dias do período. Mudar o primeiro dia leva o último junto.</p>
+    <div class="sheet-actions"><button class="btn" data-act="close">Cancelar</button><button class="btn btn-primary" data-act="agendaSalvar" data-arg="${id}">Salvar</button></div>`);
+};
+// mudou o primeiro dia: o último anda junto (mantém a duração)
+ON_CHANGE.agendaInicio = el => {
+  if(!el.value || !AGENDA_EDIT) return;
+  const fimAtual = $('a-fim').value || AGENDA_EDIT.fim;
+  const base = {inicio:AGENDA_EDIT.inicio, fim: fimAtual >= AGENDA_EDIT.inicio ? fimAtual : AGENDA_EDIT.inicio};
+  const novo = moverAgenda(base, el.value);
+  $('a-fim').value = novo.fim; AGENDA_EDIT.inicio = novo.inicio; AGENDA_EDIT.fim = novo.fim;
+};
+ACT.agendaSalvar = async id => {
+  const inicio = $('a-inicio').value, fim = $('a-fim').value || inicio;
+  if(!inicio){ toast('Escolha o primeiro dia.'); return; }
+  if(fim < inicio){ toast('O último dia não pode ser antes do primeiro.'); return; }
+  await salvando(() => db.collection("orcamentos").doc(id).update({agenda:{inicio, fim, hora:getTimeField('a-hora')}}));
+  closeModal(); toast('Serviço marcado na agenda.');
+};
+ACT.agendaRemover = async id => {
+  if(!await confirmar({titulo:'Tirar o serviço da agenda?', texto:'O orçamento continua igual, só sai a data.', ok:'Tirar', perigo:true})) return;
+  await salvando(() => db.collection("orcamentos").doc(id).update({agenda:null}));
+};
+// depois de aprovar: oferece marcar a data (o orçamento novo pode demorar um instante para chegar)
+async function perguntarAgenda(id){
+  for(let k = 0; k < 20 && !STATE.orcamentos[id]; k++) await new Promise(r => setTimeout(r, 50));
+  const o = STATE.orcamentos[id];
+  if(!o || (o.agenda && o.agenda.inicio)) return;
+  if(await confirmar({titulo:'Marcar na agenda?', texto:'Escolha o dia do serviço para não esquecer.', ok:'Marcar'})) ACT.agendaAbrir(id);
+}
+
+// ---------- lembretes ----------
+ACT.lembreteAbrir = id => {
+  const o = STATE.orcamentos[id];
+  const l = o.lembrete || {data:"", descricao:"Ligou para o cliente? Não se esqueça de atualizar a etapa do orçamento.", concluido:false};
+  openModal(`${sheetHead('Lembrete')}
+    <div class="field"><label for="l-data">Data e hora</label><input type="datetime-local" id="l-data" value="${toLocalInput(l.data)}"></div>
+    <div class="field"><label for="l-desc">O que fazer</label><textarea id="l-desc">${esc(l.descricao)}</textarea></div>
+    <p class="hint">Lembretes de hoje e atrasados aparecem na tela inicial.</p>
+    <div class="sheet-actions"><button class="btn" data-act="close">Cancelar</button><button class="btn btn-primary" data-act="lembreteSalvar" data-arg="${id}">Salvar</button></div>`);
+};
+ACT.lembreteSalvar = async id => {
+  const v = $('l-data').value;
+  if(!v){ toast('Escolha a data e a hora.'); return; }
+  await salvando(() => db.collection("orcamentos").doc(id).update({lembrete:Object.assign({}, STATE.orcamentos[id].lembrete, {data:new Date(v).toISOString(), descricao:$('l-desc').value.trim(), concluido:false})}));
+  closeModal(); toast('Lembrete salvo.');
+};
+ACT.lembreteConcluir = async id => {
+  const l = Object.assign({}, STATE.orcamentos[id].lembrete, {concluido:true});
+  await salvando(() => db.collection("orcamentos").doc(id).update({lembrete:l}));
+};
+ACT.lembreteRemover = async id => {
+  if(!await confirmar({titulo:'Remover o lembrete?', ok:'Remover', perigo:true})) return;
+  await salvando(() => db.collection("orcamentos").doc(id).update({lembrete:null}));
+};
+
+/* =====================================================================
+   AGENDA: semana (foco) e panorama do mês
+   ===================================================================== */
+const MES3 = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const SEM1 = ['D','S','T','Q','Q','S','S'];
+let AGENDA_DIA = null;
+function horaAgora(){ const d = new Date(); return p2(d.getHours()) + ':' + p2(d.getMinutes()); }
+function horaDeISO(iso){ const d = new Date(iso); return p2(d.getHours()) + ':' + p2(d.getMinutes()); }
+// já pagou tudo? (cobrança some sozinha)
+function cobrancaPaga(orcId){
+  const o = orcId && STATE.orcamentos[orcId]; if(!o) return false;
+  const t = orcTotal(o); return t.total > 0 && t.aReceber <= 0;
+}
+function orcSub(o){ return o ? [o.clienteNome, o.numero ? 'nº ' + o.numero : ''].filter(Boolean).join(' · ') : ''; }
+// tudo o que acontece num dia, já em ordem (com hora primeiro, depois sem hora)
+function itensDoDia(dia){
+  const hoje = diaHoje(), agora = horaAgora(), out = [];
+  const atrasado = (d, h) => d < hoje || (d === hoje && !!h && h < agora);
+  Object.values(STATE.orcamentos || {}).forEach(o => {
+    const a = o.agenda;
+    if(a && a.inicio && o.status !== 'perdido' && dia >= a.inicio && dia <= (a.fim || a.inicio)){
+      const total = diasEntre(a.inicio, a.fim || a.inicio);
+      out.push({tipo:'servico', hora:a.hora || '', titulo:(o.servicos && o.servicos[0] && o.servicos[0].titulo) || 'Serviço', sub:orcSub(o),
+        orcId:o.id, compId:null, diaN: total > 1 ? diasEntre(a.inicio, dia) : null, diasTotal: total > 1 ? total : null, feito:false, atrasado:false});
+    }
+    const l = o.lembrete;
+    if(l && l.data && diaDe(new Date(l.data)) === dia){
+      const cob = l.tipo === 'cobranca', feito = !!l.concluido || (cob && cobrancaPaga(o.id)), hora = horaDeISO(l.data);
+      const ar = orcTotal(o).aReceber;
+      out.push({tipo: cob ? 'cobranca' : 'lembrete', hora, titulo:l.descricao || (cob ? 'Cobrança' : 'Lembrete'),
+        sub:[orcSub(o), cob && ar > 0 ? 'A receber ' + fmtMoney(ar) : ''].filter(Boolean).join(' · '),
+        orcId:o.id, compId:null, diaN:null, diasTotal:null, feito, atrasado: !feito && atrasado(dia, hora)});
+    }
+  });
+  Object.values(STATE.compromissos || {}).forEach(c => {
+    if(c.data !== dia) return;
+    const o = c.orcamentoId && STATE.orcamentos[c.orcamentoId];
+    const feito = !!c.concluido || (c.tipo === 'cobranca' && cobrancaPaga(c.orcamentoId));
+    const ar = o ? orcTotal(o).aReceber : 0;
+    out.push({tipo: c.tipo === 'cobranca' ? 'cobranca' : 'compromisso', hora:c.hora || '', titulo:c.titulo || 'Compromisso',
+      sub:[orcSub(o), c.tipo === 'cobranca' && ar > 0 ? 'A receber ' + fmtMoney(ar) : ''].filter(Boolean).join(' · '),
+      orcId:null, compId:c.id, diaN:null, diasTotal:null, feito, atrasado: !feito && atrasado(dia, c.hora)});
+  });
+  return out.sort((a, b) => (a.hora ? 0 : 1) - (b.hora ? 0 : 1) || a.hora.localeCompare(b.hora) || a.titulo.localeCompare(b.titulo));
+}
+function diasComItens(de, ate){
+  const set = new Set();
+  for(let d = de; d <= ate; d = somarDias(d, 1)) if(itensDoDia(d).some(i => !i.feito)) set.add(d);
+  return set;
+}
+function fmtIntervalo(a, b){
+  const da = dataDoDia(a), db_ = dataDoDia(b);
+  return da.getMonth() === db_.getMonth() ? `${da.getDate()} a ${db_.getDate()} de ${MES3[db_.getMonth()]}`
+    : `${da.getDate()} de ${MES3[da.getMonth()]} a ${db_.getDate()} de ${MES3[db_.getMonth()]}`;
+}
+const TIPO_LABEL = {servico:'Serviço', compromisso:'Compromisso', cobranca:'Cobrança', lembrete:'Lembrete'};
+function itemHtml(i){
+  const act = i.orcId ? `data-act="abrir" data-arg="${esc(i.orcId)}"` : `data-act="compAbrir" data-arg="${esc(i.compId)}"`;
+  const extra = [i.diaN ? `dia ${i.diaN} de ${i.diasTotal}` : '', i.sub ? esc(i.sub) : ''].filter(Boolean).join(' · ');
+  return `<button class="day-item tipo-${i.tipo} ${i.feito ? 'feito' : ''}" ${act}>
+    <span class="hr">${i.hora ? esc(i.hora) : '—'}</span>
+    <span class="body"><span class="t">${esc(i.titulo)}<span class="tag">${TIPO_LABEL[i.tipo]}</span></span>
+      ${extra || i.atrasado || i.feito ? `<span class="d">${i.atrasado ? '<span class="late">Atrasado</span>' + (extra ? ' · ' : '') : ''}${i.feito ? 'Feito' + (extra ? ' · ' : '') : ''}${extra}</span>` : ''}</span>
+  </button>`;
+}
+function renderAgenda(dia){
+  AGENDA_DIA = /^\d{4}-\d{2}-\d{2}$/.test(dia || '') ? dia : diaHoje();
+  const ini = inicioSemana(AGENDA_DIA), fim = somarDias(ini, 6), hoje = diaHoje();
+  const ocupados = diasComItens(ini, fim), itens = itensDoDia(AGENDA_DIA);
+  const semana = Array.from({length:7}, (_, k) => somarDias(ini, k));
+  $('app').innerHTML = `
+    <header class="topbar">
+      <button class="icon-btn" data-act="go" data-arg="home" aria-label="Voltar">${ico('back')}</button>
+      <div class="titles"><h1>Agenda</h1><div class="sub">${fmtIntervalo(ini, fim)}</div></div>
+      <div class="wk-nav">
+        <button class="icon-btn" data-act="agendaSemana" data-arg="-1" aria-label="Semana anterior">${ico('back')}</button>
+        <button class="icon-btn" data-act="agendaSemana" data-arg="1" aria-label="Próxima semana" style="transform:scaleX(-1);">${ico('back')}</button>
+        <button class="btn-mes" data-act="agendaMesAbrir">Mês</button>
+      </div>
+    </header>
+    <div class="content">
+      <div class="week-strip" role="group" aria-label="Dias da semana">
+        ${semana.map(d => `<button class="wk-day ${d === AGENDA_DIA ? 'on' : ''} ${ocupados.has(d) ? 'has' : ''} ${d === hoje ? 'hoje' : ''}" data-act="agendaDia" data-arg="${d}" aria-label="${fmtDiaLongo(d)}">${SEM1[dataDoDia(d).getDay()]}<b>${dataDoDia(d).getDate()}</b><i></i></button>`).join('')}
+      </div>
+      <div class="day-title">${fmtDiaLongo(AGENDA_DIA)}${AGENDA_DIA === hoje ? ' (hoje)' : ''}</div>
+      <div class="day-items">${itens.length ? itens.map(itemHtml).join('') : '<p class="empty">Nada marcado neste dia.</p>'}</div>
+      <button class="btn btn-primary btn-block" data-act="compAbrir">${ico('plus')} Novo compromisso</button>
+    </div>`;
+}
+ACT.agendaDia = d => go('agenda', d);
+ACT.agendaSemana = n => go('agenda', somarDias(AGENDA_DIA || diaHoje(), 7 * Number(n)));
+ACT.agendaMesAbrir = () => go('agendaMes', (AGENDA_DIA || diaHoje()).slice(0, 7));
+ACT.agendaMesNav = n => {
+  const [a, m] = String(VIEW.param || diaHoje().slice(0, 7)).split('-').map(Number);
+  const d = new Date(a, m - 1 + Number(n), 1, 12);
+  go('agendaMes', d.getFullYear() + '-' + p2(d.getMonth() + 1));
+};
+function renderAgendaMes(ym){
+  if(!/^\d{4}-\d{2}$/.test(ym || '')) ym = (AGENDA_DIA || diaHoje()).slice(0, 7);
+  const [a, m] = ym.split('-').map(Number);
+  const primeiro = ym + '-01', nDias = new Date(a, m, 0).getDate(), ultimo = ym + '-' + p2(nDias);
+  const ocupados = diasComItens(primeiro, ultimo), hoje = diaHoje();
+  const sel = AGENDA_DIA || hoje, wIni = inicioSemana(sel), wFim = somarDias(wIni, 6);
+  const vazios = dataDoDia(primeiro).getDay();
+  const nomeMes = MESES[m - 1].charAt(0).toUpperCase() + MESES[m - 1].slice(1) + ' ' + a;
+  $('app').innerHTML = `
+    ${topbar('Panorama do mês', '', 'agenda:' + sel)}
+    <div class="content">
+      <div class="month-head">
+        <button class="icon-btn" data-act="agendaMesNav" data-arg="-1" aria-label="Mês anterior">${ico('back')}</button>
+        <h2 style="font-size:17px;">${nomeMes}</h2>
+        <button class="icon-btn" data-act="agendaMesNav" data-arg="1" aria-label="Próximo mês" style="transform:scaleX(-1);">${ico('back')}</button>
+      </div>
+      <div class="month-grid">
+        ${SEM1.map(w => `<div class="wd">${w}</div>`).join('')}
+        ${'<div></div>'.repeat(vazios)}
+        ${Array.from({length:nDias}, (_, k) => { const d = ym + '-' + p2(k + 1);
+          return `<button class="mday ${ocupados.has(d) ? 'busy' : ''} ${d === hoje ? 'hoje' : ''} ${d >= wIni && d <= wFim ? 'wk' : ''}" data-act="go" data-arg="agenda:${d}" aria-label="${fmtDiaLongo(d)}">${k + 1}</button>`; }).join('')}
+      </div>
+      <p class="month-leg">Dias destacados têm algo marcado. O contorno amarelo é a semana aberta. Toque num dia para ver a semana dele.</p>
+    </div>`;
+}
+
+// amanhã às 09:00 (hora local), em ISO, como os lembretes
+function amanha9ISO(){ const d = dataDoDia(somarDias(diaHoje(), 1)); d.setHours(9, 0, 0, 0); return d.toISOString(); }
+ACT.lembreteAdiar = async id => {
+  const l = Object.assign({}, STATE.orcamentos[id].lembrete, {data:amanha9ISO(), concluido:false});
+  await salvando(() => db.collection("orcamentos").doc(id).update({lembrete:l}));
+  toast('Lembrete adiado para amanhã às 09:00.');
+};
+// depois de finalizar: se ainda falta receber, oferece lembrar de cobrar amanhã
+async function oferecerCobranca(id){
+  for(let k = 0; k < 20 && !STATE.orcamentos[id]; k++) await new Promise(r => setTimeout(r, 50));
+  const o = STATE.orcamentos[id]; if(!o) return;
+  const falta = orcTotal(o).aReceber; if(falta <= 0) return;
+  if(!await confirmar({titulo:'Lembrar de cobrar?', texto:`Ainda faltam ${fmtMoney(falta)}. O lembrete fica para amanhã às 09:00.`, ok:'Lembrar amanhã'})) return;
+  if(o.lembrete && !o.lembrete.concluido &&
+     !await confirmar({titulo:'Substituir o lembrete atual?', texto:'Este orçamento já tem um lembrete: "' + (o.lembrete.descricao || '') + '".', ok:'Substituir'})) return;
+  await salvando(() => db.collection("orcamentos").doc(id).update({lembrete:{data:amanha9ISO(), descricao:'Cobrar ' + (o.clienteNome || 'o cliente'), concluido:false, tipo:'cobranca'}}));
+  toast('Lembrete de cobrança para amanhã às 09:00.');
+}
+
+// ---------- compromissos e cobranças soltos ----------
+let COMP_TIPO = 'compromisso';
+ACT.compAbrir = compId => {
+  const c = compId ? STATE.compromissos[compId] : null;
+  if(compId && !c) return;
+  COMP_TIPO = c ? (c.tipo === 'cobranca' ? 'cobranca' : 'compromisso') : 'compromisso';
+  const dia = c ? c.data : (VIEW.name === 'agenda' && AGENDA_DIA ? AGENDA_DIA : diaHoje());
+  const h = splitHHMM(c ? c.hora : '');
+  const orcs = Object.values(STATE.orcamentos).filter(o => o.status !== 'perdido' || (c && c.orcamentoId === o.id)).sort((a, b) => String(b.criadoEm).localeCompare(String(a.criadoEm)));
+  openModal(`${sheetHead(c ? 'Editar compromisso' : 'Novo compromisso')}
+    <div class="seg" role="group" aria-label="Tipo">
+      <button type="button" data-act="compTipo" data-arg="compromisso" class="${COMP_TIPO === 'compromisso' ? 'on' : ''}">Compromisso</button>
+      <button type="button" data-act="compTipo" data-arg="cobranca" class="${COMP_TIPO === 'cobranca' ? 'on' : ''}">Cobrança</button>
+    </div>
+    <div class="field"><label for="c-titulo">O que é</label><input type="text" id="c-titulo" autocomplete="off" placeholder="Ex: Visita para orçar" value="${esc(c ? c.titulo : '')}"></div>
+    <div class="row"><div class="field"><label for="c-data">Dia</label><input type="date" id="c-data" value="${esc(dia)}"></div>
+    <div class="field"><label for="c-hora-h">Horário (opcional)</label>${timeFieldsHtml('c-hora', h.h, h.m)}</div></div>
+    <div class="field"><label for="c-orc">Ligar a um orçamento (opcional)</label>
+      <select id="c-orc"><option value="">Nenhum</option>${c && c.orcamentoId && !STATE.orcamentos[c.orcamentoId] ? `<option value="${esc(c.orcamentoId)}" selected>Orçamento excluído</option>` : ''}${orcs.map(o => `<option value="${esc(o.id)}" ${c && c.orcamentoId === o.id ? 'selected' : ''}>nº ${esc(o.numero)} · ${esc(o.clienteNome || '')}</option>`).join('')}</select></div>
+    ${c ? `<div class="btn-group" style="margin-top:12px;">
+      ${!c.concluido ? `<button class="btn btn-sm" data-act="compConcluir" data-arg="${esc(compId)}">Marcar como feito</button>` : ''}
+      ${c.data <= diaHoje() ? `<button class="btn btn-sm" data-act="compAdiar" data-arg="${esc(compId)}">Adiar para amanhã</button>` : ''}
+      <button class="btn btn-sm btn-danger" data-act="compExcluir" data-arg="${esc(compId)}" style="flex:0 0 auto;">Excluir</button></div>` : ''}
+    <div class="sheet-actions"><button class="btn" data-act="close">Cancelar</button>
+      <button class="btn btn-primary" data-act="compSalvar" ${c ? `data-arg="${esc(compId)}"` : ''}>Salvar</button></div>`);
+};
+ACT.compTipo = t => {
+  COMP_TIPO = t === 'cobranca' ? 'cobranca' : 'compromisso';
+  document.querySelectorAll('.seg [data-act="compTipo"]').forEach(b => b.classList.toggle('on', b.dataset.arg === COMP_TIPO));
+  if($('c-titulo')) $('c-titulo').placeholder = COMP_TIPO === 'cobranca' ? 'Ex: Cobrar João' : 'Ex: Visita para orçar';
+};
+ACT.compSalvar = async compId => {
+  const titulo = $('c-titulo').value.trim(), data = $('c-data').value;
+  if(!titulo){ toast('Escreva o que é.'); return; }
+  if(!data){ toast('Escolha o dia.'); return; }
+  const doc = {tipo:COMP_TIPO, titulo, data, hora:getTimeField('c-hora'), orcamentoId:$('c-orc').value || null};
+  if(compId) await salvando(() => db.collection("compromissos").doc(compId).update(doc));
+  else await salvando(() => db.collection("compromissos").add(Object.assign(doc, {concluido:false, criadoEm:nowISO()})));
+  closeModal(); toast(COMP_TIPO === 'cobranca' ? 'Cobrança salva.' : 'Compromisso salvo.');
+};
+ACT.compConcluir = async compId => {
+  await salvando(() => db.collection("compromissos").doc(compId).update({concluido:true}));
+  closeModal(); toast('Marcado como feito.');
+};
+ACT.compAdiar = async compId => {
+  await salvando(() => db.collection("compromissos").doc(compId).update({data:somarDias(diaHoje(), 1), concluido:false}));
+  closeModal(); toast('Adiado para amanhã.');
+};
+ACT.compExcluir = async compId => {
+  if(!await confirmar({titulo:'Excluir este compromisso?', ok:'Excluir', perigo:true})) return;
+  await salvando(() => db.collection("compromissos").doc(compId).delete());
+  closeModal(); toast('Compromisso excluído.');
+};
+
+// ---------- recibos ----------
+ACT.reciboAbrir = id => {
+  const t = orcTotal(STATE.orcamentos[id]);
+  openModal(`${sheetHead('Emitir recibo')}
+    <p class="sub" style="margin:0;">Saldo em aberto: <b class="num">${fmtMoney(t.aReceber)}</b></p>
+    <div class="field"><label for="r-forma">Forma de pagamento</label>
+      <select id="r-forma"><option>Pix</option><option>Dinheiro</option><option>Cartão de crédito</option><option>Cartão de débito</option><option>Boleto</option><option>Transferência</option><option>Outro</option></select></div>
+    <div class="field"><label for="r-valor">Valor recebido</label><div class="money-in"><input type="text" inputmode="decimal" id="r-valor" placeholder="0,00" value="${t.aReceber > 0 ? numIn(t.aReceber) : ''}"></div></div>
+    <p class="hint">O recibo fica salvo no orçamento e o PDF é baixado em seguida.</p>
+    <div class="sheet-actions"><button class="btn" data-act="close">Cancelar</button><button class="btn btn-primary" data-act="reciboConfirmar" data-arg="${id}">Emitir</button></div>`);
+};
+ACT.reciboConfirmar = async (id, btn) => {
+  const forma = $('r-forma').value, valor = cents(parseNum($('r-valor').value));
+  if(valor <= 0){ toast('Informe o valor recebido.'); return; }
+  btn.disabled = true;
+  const o = STATE.orcamentos[id];
+  const recibos = (o.recibos || []).concat([{forma, valor, data:nowISO()}]);
+  try {
+    await salvando(() => db.collection("orcamentos").doc(id).update({recibos}));
+    closeModal();
+    const copia = Object.assign({}, o, {recibos});
+    await gerarDocumento(copia, 'recibo', recibos.length - 1);
+  } catch(e){ btn.disabled = false; }
+};
+ACT.reciboExcluir = async arg => {
+  const [id, idx] = arg.split(':');
+  if(!await confirmar({titulo:'Excluir este recibo?', texto:'O valor deixa de contar como recebido.', ok:'Excluir', perigo:true})) return;
+  const recibos = (STATE.orcamentos[id].recibos || []).slice();
+  recibos.splice(Number(idx), 1);
+  await salvando(() => db.collection("orcamentos").doc(id).update({recibos}));
+};
+
+/* =====================================================================
+   A FOLHA DO DOCUMENTO (prévia e PDF usam a mesma)
+   ===================================================================== */
+function renderDocumento(o, tipo, reciboIdx){
+  const cfg = STATE.config || {};
+  const t = orcTotal(o);
+  const cli = clienteDe(o);
+  const logo = logoSrc();
+  const recibo = tipo === 'recibo' ? (o.recibos || [])[reciboIdx] : null;
+  const dataDoc = recibo ? recibo.data : o.criadoEm;
+  const coLinha = [cfg.cnpj ? 'CNPJ/CPF ' + cfg.cnpj : '', [cfg.cidade, cfg.estado].filter(Boolean).join('/')].filter(Boolean).join(' · ');
+  const coContato = [cfg.telefone, cfg.email].filter(Boolean).join(' · ');
+  const cliContato = [cli.telefone || o.clienteTelefone, cli.email].filter(Boolean).join(' · ');
+  const servRows = (o.servicos || []).map(s => `<tr>
+      <td><div class="it">${esc(s.titulo)}</div>${s.descricao ? `<div class="ds">${esc(s.descricao)}</div>` : ''}${s.porHora ? `<div class="ds">${horaResumo(s)}</div>` : ''}${s.porDiaria ? `<div class="ds">${diariaResumo(s)}</div>` : ''}</td>
+      <td class="r">${fmtNum(s.quantidade)}</td><td class="r">${fmtMoney(s.valorUnit)}</td><td class="r">${fmtMoney(s.valorTotal)}</td></tr>`).join('');
+  const matRows = (o.materiais || []).map(m => `<tr>
+      <td>${esc(m.titulo)}</td><td class="r">${fmtNum(m.quantidade)} ${esc(m.unidade || 'und')}</td>
+      <td class="r">${fmtMoney(matUnitFinal(m))}</td><td class="r">${fmtMoney(m.valorTotal)}</td></tr>`).join('');
+  const recebidoAte = recibo ? cents((o.recibos || []).slice(0, reciboIdx + 1).reduce((s, r) => s + Number(r.valor || 0), 0)) : 0;
+  return `<div class="doc">
+    <div class="tape"></div>
+    <div class="hdr">
+      <div style="min-width:0;">
+        ${logo ? `<img src="${esc(logo)}" alt="">` : ''}
+        <h2 class="co">${esc(cfg.nomeEmpresa) || 'Sua empresa'}</h2>
+        ${coLinha ? `<div class="co-sub">${esc(coLinha)}</div>` : ''}
+        ${coContato ? `<div class="co-sub" style="margin-top:0;">${esc(coContato)}</div>` : ''}
+      </div>
+      <div class="meta">
+        <div class="kind">${recibo ? 'Recibo' : 'Orçamento'}</div>
+        <div class="nr">nº ${esc(o.numero)}${recibo ? '-R' + (reciboIdx + 1) : ''}</div>
+        <div class="when">${fmtDate(dataDoc)}</div>
+        ${!recibo ? `<div class="when">Válido por ${o.validadeDias || cfg.validadeDias || 7} dias</div>` : ''}
+      </div>
+    </div>
+    <div class="to">
+      <div class="h">${recibo ? 'Recebido de' : 'Para'}</div>
+      <div class="name">${esc(o.clienteNome) || 'Nome do cliente'}</div>
+      ${cliContato ? `<div class="m">${esc(cliContato)}</div>` : ''}
+      ${cfg.mostrarEndereco && cli.endereco ? `<div class="m">${esc(cli.endereco)}</div>` : ''}
+      ${cfg.mostrarCpfCnpjCliente && cli.cpfCnpj ? `<div class="m">CPF/CNPJ ${esc(cli.cpfCnpj)}</div>` : ''}
+    </div>
+    ${servRows ? `<table><thead><tr><th>Serviço</th><th class="r" style="width:60px;">Qtd.</th><th class="r" style="width:110px;">Unitário</th><th class="r" style="width:120px;">Total</th></tr></thead><tbody>${servRows}</tbody></table>` : ''}
+    ${matRows ? `<table><thead><tr><th>Material</th><th class="r" style="width:90px;">Qtd.</th><th class="r" style="width:110px;">Unitário</th><th class="r" style="width:120px;">Subtotal</th></tr></thead><tbody>${matRows}</tbody></table>` : ''}
+    ${!servRows && !matRows ? `<table><tbody><tr><td style="color:var(--paper-soft);font-style:italic;">Nenhum item adicionado ainda</td></tr></tbody></table>` : ''}
+    <div class="totals"><div class="tbox">
+      ${matRows ? `<div class="tl"><span>Mão de obra e serviços</span><span>${fmtMoney(t.totalServicos)}</span></div><div class="tl"><span>Materiais</span><span>${fmtMoney(t.totalMateriais)}</span></div>` : ''}
+      ${recibo ? `<div class="tl"><span>Total do orçamento</span><span>${fmtMoney(t.total)}</span></div>
+        <div class="tl grand"><span>Valor recebido</span><span>${fmtMoney(recibo.valor)}</span></div>
+        <div class="tl" style="margin-top:6px;"><span>Saldo após este pagamento</span><span>${fmtMoney(cents(t.total - recebidoAte))}</span></div>`
+      : `<div class="tl grand"><span>Total</span><span>${fmtMoney(t.total)}</span></div>`}
+    </div></div>
+    ${recibo ? `<div class="stmt">Declaro, por meio deste documento, ter recebido de <b>${esc(o.clienteNome)}</b> a quantia de <b>${fmtMoney(recibo.valor)}</b>, via ${esc(recibo.forma)}, referente ao orçamento nº ${esc(o.numero)}.</div>` : ''}
+    <div class="terms">
+      <div>Garantia da mão de obra<b>${o.garantiaDias || cfg.garantiaDiasPadrao || 90} dias</b></div>
+      ${!recibo ? `<div>Validade da proposta<b>${o.validadeDias || cfg.validadeDias || 7} dias</b></div>` : `<div>Forma de pagamento<b>${esc(recibo.forma)}</b></div>`}
+      ${cfg.mostrarPix && cfg.pixChave ? `<div>Chave Pix<b>${esc(cfg.pixChave)}</b></div>` : ''}
+    </div>
+    ${o.descricaoAtividades && !recibo ? `<div class="obs"><div class="h">Observações</div><p>${esc(o.descricaoAtividades)}</p></div>` : ''}
+    ${cfg.mostrarAssinaturaEmpresa || cfg.mostrarAssinaturaCliente ? `<div class="signs">
+      ${cfg.mostrarAssinaturaEmpresa ? `<div>${esc(cfg.nomeEmpresa || 'Empresa')}</div>` : ''}
+      ${cfg.mostrarAssinaturaCliente ? `<div>${esc(o.clienteNome || 'Cliente')}</div>` : ''}
+    </div>` : ''}
+    <div class="foot">Documento gerado em ${fmtDateTime(nowISO())}</div>
+  </div>`;
+}
+// coloca a folha (780px) dentro de um espaço menor, em escala
+function montarFolha(frame, o, tipo, reciboIdx){
+  frame.innerHTML = renderDocumento(o, tipo, reciboIdx);
+  const fit = () => {
+    const doc = frame.firstElementChild; if(!doc || !frame.isConnected) return;
+    const s = Math.min(1, frame.clientWidth / 780);
+    doc.style.transform = `scale(${s})`;
+    frame.style.height = Math.ceil(doc.offsetHeight * s) + 'px';
+  };
+  fit();
+  frame.querySelectorAll('img').forEach(img => img.complete || img.addEventListener('load', fit));
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+}
+window.addEventListener('resize', () => document.querySelectorAll('.doc-frame').forEach(f => {
+  const doc = f.firstElementChild; if(!doc) return;
+  const s = Math.min(1, f.clientWidth / 780); doc.style.transform = `scale(${s})`; f.style.height = Math.ceil(doc.offsetHeight * s) + 'px';
+}));
+function abrirPrevia(o, tipo){
+  openModal(`${sheetHead('Prévia do documento')}<p class="sub" style="margin:0 0 12px;">É assim que o cliente vai ver.</p><div class="doc-frame" id="modal-frame"></div>`, 'doc-sheet');
+  montarFolha($('modal-frame'), o, tipo);
+}
+
+// ---------- PDF ----------
+// fotografa a folha e corta as páginas entre as linhas da tabela, nunca no meio de um item
+async function buildPdfBlob(o, tipo, reciboIdx){
+  if(!window.html2canvas || !window.jspdf) throw new Error('as ferramentas de PDF não carregaram (precisa de internet)');
+  const host = document.createElement('div');
+  host.className = 'pdf-host';
+  host.innerHTML = renderDocumento(o, tipo, reciboIdx);
+  document.body.appendChild(host);
+  try {
+    const docEl = host.firstElementChild;
+    await Promise.all([...docEl.querySelectorAll('img')].map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; })));
+    if(document.fonts && document.fonts.ready) await document.fonts.ready;
+    const canvas = await html2canvas(docEl, {scale:2, backgroundColor:'#ffffff', useCORS:true, logging:false});
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageW = pdf.internal.pageSize.getWidth(), pageH = pdf.internal.pageSize.getHeight();
+    const ratio = canvas.width / docEl.offsetWidth;
+    const pxPerMm = canvas.width / pageW;
+    const margin = 14;
+    const top = docEl.getBoundingClientRect().top;
+    const breaks = [...docEl.querySelectorAll('tr, .hdr, .to, .totals, .stmt, .terms, .obs, .signs, .foot')]
+      .map(el => Math.round((el.getBoundingClientRect().bottom - top) * ratio)).sort((a, b) => a - b);
+    // passou só um pouco de uma página? reduz um pouco a folha e mantém tudo numa página
+    const alturaMm = canvas.height / pxPerMm, cabe = pageH - margin;
+    if(alturaMm > cabe && alturaMm <= cabe * 1.15){
+      const k = cabe / alturaMm;
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', (pageW - pageW * k) / 2, 0, pageW * k, cabe);
+      return pdf.output('blob');
+    }
+    let start = 0, first = true;
+    while(start < canvas.height - 2){
+      const topMm = first ? 0 : margin;
+      const pagePx = Math.floor((pageH - topMm - margin) * pxPerMm);
+      let end = Math.min(start + pagePx, canvas.height);
+      if(end < canvas.height){ const fit = breaks.filter(b => b > start + 40 && b <= end); if(fit.length) end = fit[fit.length - 1]; }
+      const slice = document.createElement('canvas');
+      slice.width = canvas.width; slice.height = end - start;
+      const ctx = slice.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, slice.width, slice.height);
+      ctx.drawImage(canvas, 0, start, canvas.width, slice.height, 0, 0, canvas.width, slice.height);
+      if(!first) pdf.addPage();
+      pdf.addImage(slice.toDataURL('image/png'), 'PNG', 0, topMm, pageW, slice.height / pxPerMm);
+      first = false; start = end;
+    }
+    return pdf.output('blob');
+  } finally { host.remove(); }
+}
+function nomeArquivo(o, tipo, reciboIdx){
+  const cli = (o.clienteNome || 'cliente').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+  return (tipo === 'recibo' ? `Recibo_${o.numero}-R${reciboIdx + 1}` : `Orcamento_${o.numero}`) + `_${cli}.pdf`;
+}
+let GERANDO = false;
+async function gerarDocumento(o, tipo, reciboIdx){
+  if(GERANDO) return; GERANDO = true;
+  toast("Gerando PDF…");
+  try {
+    const blob = await buildPdfBlob(o, tipo, reciboIdx);
+    await entregarArquivo(blob, nomeArquivo(o, tipo, reciboIdx), 'PDF pronto.');
+  } catch(e){ console.error(e); toast("Não foi possível gerar o PDF: " + (e.message || e)); }
+  finally { GERANDO = false; }
+}
+ACT.pdf = arg => {
+  const [id, tipo, idx] = arg.split(':');
+  const o = STATE.orcamentos[id]; if(!o) return;
+  gerarDocumento(o, tipo, idx !== undefined ? Number(idx) : undefined);
+};
+// entrega o arquivo: no Claude pela janela de download dele; no celular pelo "compartilhar"; no computador baixando
+async function entregarArquivo(blob, filename, okMsg){
+  if(downloadsCap){
+    try { await downloadsCap.save({filename, data:blob}); toast(okMsg); return; }
+    catch(e){ if(e && e.code === 'declined') return; console.warn('downloads', e); }
+  }
+  try {
+    const file = new File([blob], filename, {type:blob.type});
+    if(MODO === 'local' && navigator.canShare && navigator.canShare({files:[file]}) && /Android|iPhone|iPad/i.test(navigator.userAgent)){
+      await navigator.share({files:[file], title:filename}); return;
+    }
+  } catch(e){ if(e && e.name === 'AbortError') return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast(okMsg);
+}
+
+/* =====================================================================
+   RELATÓRIOS
+   ===================================================================== */
+function monthKey(iso){ const d = new Date(iso); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0'); }
+function monthLabel(key){ const [y, m] = key.split('-'); return ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][Number(m)-1] + "/" + y.slice(2); }
+function moneyShort(v){ return v >= 1000 ? (v/1000).toLocaleString('pt-BR', {maximumFractionDigits:1}) + " mil" : Math.round(v).toString(); }
+function svgBarChart(data){
+  const w = 340, h = 190, padB = 26, padT = 22, padX = 6;
+  const max = Math.max(1, ...data.map(d => d.value));
+  const slot = (w - padX*2) / (data.length || 1), barW = Math.min(34, slot * 0.55);
+  const base = h - padB;
+  const bars = data.map((d, i) => {
+    const bh = (d.value / max) * (base - padT);
+    const x = padX + i*slot + (slot - barW)/2, y = base - bh;
+    const last = i === data.length - 1;
+    return `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(bh, d.value > 0 ? 2 : 0)}" rx="3" fill="${last ? 'var(--accent)' : 'var(--line-strong)'}"></rect>
+      ${d.value > 0 ? `<text x="${x + barW/2}" y="${y - 6}" font-size="10" text-anchor="middle" fill="var(--ink)" font-weight="${last ? 700 : 400}">${moneyShort(d.value)}</text>` : ''}
+      <text x="${x + barW/2}" y="${h - 8}" font-size="10" text-anchor="middle" fill="var(--ink-soft)">${d.label}</text>`;
+  }).join("");
+  return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Recebido nos últimos 6 meses"><line x1="0" x2="${w}" y1="${base + 0.5}" y2="${base + 0.5}" stroke="var(--line-strong)" stroke-width="1"></line>${bars}</svg>`;
+}
+function renderRelatorios(){
+  const orcs = Object.values(STATE.orcamentos);
+  const now = new Date(), keys = [];
+  for(let i = 5; i >= 0; i--){ const d = new Date(now.getFullYear(), now.getMonth() - i, 1); keys.push(d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0')); }
+  const porMes = {}; keys.forEach(k => porMes[k] = 0);
+  orcs.forEach(o => (o.recibos || []).forEach(r => { const k = monthKey(r.data); if(k in porMes) porMes[k] = cents(porMes[k] + Number(r.valor || 0)); }));
+  const chartData = keys.map(k => ({label:monthLabel(k), value:porMes[k]}));
+  const mesAtual = keys[keys.length - 1];
+  const emAberto = orcs.filter(o => o.status !== 'perdido').reduce((s, o) => s + Math.max(0, orcTotal(o).aReceber), 0);
+  const fechados = orcs.filter(o => ['aprovado','execucao','finalizado'].includes(o.status)).length;
+  const decididos = orcs.filter(o => ['aprovado','execucao','finalizado','perdido'].includes(o.status)).length;
+  $('app').innerHTML = `
+    ${topbar("Relatórios", "", "home")}
+    <div class="content">
+      <div class="stats">
+        <div class="stat"><div class="sub">Recebido em ${monthLabel(mesAtual)}</div><div class="v num">${fmtMoney(porMes[mesAtual])}</div></div>
+        <div class="stat"><div class="sub">Total a receber</div><div class="v num">${fmtMoney(emAberto)}</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Recebido nos últimos 6 meses</h2></div>
+        ${svgBarChart(chartData)}
+        <p class="hint">Soma dos recibos emitidos em cada mês.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Orçamentos por etapa</h2>${decididos ? `<span class="sub">${Math.round(fechados / decididos * 100)}% fechados</span>` : ''}</div>
+        <div class="items">${STATUS_ORDER.map(s => `<div class="item-row" style="align-items:center;"><div><span class="pill st-${s}">${STATUS_LABEL[s]}</span></div><div class="item-val">${orcs.filter(o => o.status === s).length}</div></div>`).join("")}</div>
+        ${decididos ? `<p class="hint">"Fechados" conta aprovados, em execução e finalizados, entre os que já tiveram resposta (perdidos incluídos).</p>` : ''}
+      </div>
+    </div>`;
+}
+
+boot();
+</script>
+<datalist id="unidades"><option value="und"></option><option value="m"></option><option value="m²"></option><option value="m³"></option><option value="cm"></option><option value="kg"></option><option value="g"></option><option value="L"></option><option value="h"></option><option value="cx"></option><option value="pç"></option></datalist>
+<!-- /CONTEUDO -->
+</body></html>
