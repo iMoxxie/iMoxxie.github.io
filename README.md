@@ -1,8 +1,8 @@
 # OrçaTop (calculadora de orçamentos)
 
-Versão atual: `OrçaTop.html` (2026-11-01), que junta a versão do pai com a nossa v1.
+Versão atual: `OrçaTop.html` (2026-11-01)
 
-As duas versões não se misturam sozinhas. Para levar os dados de uma para a outra, baixe o backup numa e use **Restaurar backup** na outra.
+Para levar os dados de uma para a outra, baixe o backup numa e use **Restaurar backup** na outra.
 
 ## O que tem
 - Início com lembretes atrasados e de hoje, total em andamento e a receber
@@ -17,11 +17,6 @@ As duas versões não se misturam sozinhas. Para levar os dados de uma para a ou
 - Backup e restauração; importa os orçamentos da calculadora v1
 - **Agenda (2026-11-05):** semana com a lista do dia e panorama do mês; serviços de um ou vários dias ligados ao orçamento (perguntado ao aprovar); compromissos e cobranças soltos; cobrança oferecida ao finalizar com valor a receber; "Hoje na agenda" no início
 - **Diária (2026-11-05):** mão de obra por dias × valor da diária
-
-## Depois de mudar o `OrçaTop.html`
-1. Rode os testes: `NODE_PATH=<pasta com playwright>/node_modules node testes/teste-orcatop.js` e `... node testes/teste-agenda.js` (neste computador o Playwright está em `/home/Moxxie/Documents/busca-top/busca-top/node_modules`)
-2. Gere a cópia do Claude: `./gerar-versao-claude.sh` (cria `publicado/orcatop-claude.html`)
-3. Publique de novo essa cópia no mesmo link
 
 ## Pastas
 - `OrçaTop.html`: o app (arquivo principal)
