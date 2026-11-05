@@ -2,10 +2,6 @@
 
 Versão atual: `OrçaTop.html` (2026-11-01), que junta a versão do pai com a nossa v1.
 
-## Dois jeitos de usar
-- **No Claude (nuvem):** https://claude.ai/artifact/217qwseBAQ6cou6JDtf8Cc. Os dados ficam na nuvem do Claude e aparecem iguais no celular e no computador. O link é privado: para outra pessoa usar, compartilhe pelo menu Share da página.
-- **Como arquivo:** abra `OrçaTop.html` no navegador (Chrome, Edge ou Firefox). Os dados ficam só naquele navegador. Baixe um backup de vez em quando em **Configurações → Backup**.
-
 As duas versões não se misturam sozinhas. Para levar os dados de uma para a outra, baixe o backup numa e use **Restaurar backup** na outra.
 
 ## O que tem
